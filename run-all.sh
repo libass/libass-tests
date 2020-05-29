@@ -25,9 +25,20 @@ cmpDir="$(getDir $1)"
 tstDir="$(getDir $2)"
 
 # The actual tests
-find "$tstDir" -maxdepth 1 -type d -not -name ".*" -print0 | xargs -0 -P "$PARALLEL" -n 1 "$cmpDir"compare
+find "$tstDir" -maxdepth 1 -type d -not -name ".*" -print0 | xargs -0 -P "$PARALLEL" -n 1 -I {} \
+	sh -c '
+		if [ ! -d "$1" ] ; then
+			exit 1
+		fi
+		if [ -f "$1"/scale ] ; then
+			"$2"compare "$1" -s "$(cat "$1"/scale)"
+		else
+			"$2"compare "$1"
+		fi
+	' _ "{}" "$cmpDir"
 es="$?"
 
+# Handling return value
 if [ "$es" -eq 127 ] ; then
 	echo "There was no compare executable at $cmpDir !"
 elif [ "$es" -eq 126 ] ; then
