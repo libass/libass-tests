@@ -1,0 +1,9 @@
+Some karaoke samples from old issues:
+
+216-vertical:
+	Vertical Karaoke (@ + rotation) was broken in several releases
+
+357-k-and-kf-desynced:
+	Between 0.14 and 0.15 the \kf event starts filling the text _before_ the
+	preceeding \k event finished.
+

@@ -1,0 +1,40 @@
+﻿[Script Info]
+ScriptType: v4.00+
+ScaledBorderAndShadow: yes
+YCbCr Matrix: None
+PlayResX: 384
+PlayResY: 288
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,DejaVu Sans,24,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,2,10,10,10,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Comment: 0,0:00:00.00,0:00:01.00,Default,,0,0,0,,an1 coll
+Dialogue: 0,0:00:00.00,0:00:01.00,Default,,0,0,0,,{\an1\1a&HFF}AAAAAAAAAAAAAAAAAAAAAAAAA
+Dialogue: 0,0:00:00.00,0:00:01.00,Default,,0,0,0,,{\an1}A
+Comment: 0,0:00:01.00,0:00:02.00,Default,,0,0,0,,an2 coll
+Dialogue: 0,0:00:01.00,0:00:02.00,Default,,0,0,0,,{\an2\1a&HFF}AAAAAAAAAAAAAAAAAAAAAAAAA
+Dialogue: 0,0:00:01.00,0:00:02.00,Default,,0,0,0,,{\an2}A
+Comment: 0,0:00:02.00,0:00:03.00,Default,,0,0,0,,an3 coll
+Dialogue: 0,0:00:02.00,0:00:03.00,Default,,0,0,0,,{\an2\1a&HFF}AAAAAAAAAAAAAAAAAAAAAAAAA
+Dialogue: 0,0:00:02.00,0:00:03.00,Default,,0,0,0,,{\an3}A
+Comment: 0,0:00:03.00,0:00:04.00,Default,,0,0,0,,an4 coll
+Dialogue: 0,0:00:03.00,0:00:04.00,Default,,0,0,0,,{\an5\1a&HFF}AAAAAAAAAAAAAAAAAAAAAAAAA
+Dialogue: 0,0:00:03.00,0:00:04.00,Default,,0,0,0,,{\an4}A
+Comment: 0,0:00:04.00,0:00:05.00,Default,,0,0,0,,an5 coll
+Dialogue: 0,0:00:04.00,0:00:05.00,Default,,0,0,0,,{\an5\1a&HFF}AA
+Dialogue: 0,0:00:04.00,0:00:05.00,Default,,0,0,0,,{\an5}A
+Comment: 0,0:00:05.00,0:00:06.00,Default,,0,0,0,,an6 coll
+Dialogue: 0,0:00:05.00,0:00:06.00,Default,,0,0,0,,{\an5\1a&HFF}AAAAAAAAAAAAAAAAAAAAAAAAA
+Dialogue: 0,0:00:05.00,0:00:06.00,Default,,0,0,0,,{\an6}A
+Comment: 0,0:00:06.00,0:00:07.00,Default,,0,0,0,,an7 coll
+Dialogue: 0,0:00:06.00,0:00:07.00,Default,,0,0,0,,{\an8\1a&HFF}AAAAAAAAAAAAAAAAAAAAAAAAA
+Dialogue: 0,0:00:06.00,0:00:07.00,Default,,0,0,0,,{\an7}A
+Comment: 0,0:00:07.00,0:00:08.00,Default,,0,0,0,,an8 coll
+Dialogue: 0,0:00:07.00,0:00:08.00,Default,,0,0,0,,{\an8\1a&HFF}AAAAAAAAAAAAAAAAAAAAAAAAA
+Dialogue: 0,0:00:07.00,0:00:08.00,Default,,0,0,0,,{\an8}A
+Comment: 0,0:00:08.00,0:00:09.00,Default,,0,0,0,,an9 coll
+Dialogue: 0,0:00:08.00,0:00:09.00,Default,,0,0,0,,{\an8\1a&HFF}AAAAAAAAAAAAAAAAAAAAAAAAA
+Dialogue: 0,0:00:08.00,0:00:09.00,Default,,0,0,0,,{\an9}A

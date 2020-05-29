@@ -1,0 +1,7 @@
+Test with draw-images.
+
+Eg between 0.14 and 0.15 there was a regression related to spacing in lines only 
+consisting of images.
+	introduced: e8d98dafb8d4d1fd80e9d398cfbef7db1e2ccb73
+	font: remove dependency on symbol codes 
+Originally reported as mpv/#7712

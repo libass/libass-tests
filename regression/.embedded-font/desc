@@ -1,0 +1,5 @@
+Testing (correct) decoding of embedded fonts.
+
+Currently disabled, because due to
+ https://github.com/libass/libass/issues/266
+compare currently can't handle embedded fonts.
