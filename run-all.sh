@@ -24,8 +24,15 @@ fi
 cmpDir="$(getDir $1)"
 tstDir="$(getDir $2)"
 
+if [ ! -x "$cmpDir"compare ] ; then
+	echo "There's no 'compare' in the given location or it is not executable !"
+	echo "   ($cmpDir)"
+	exit 1
+fi
+
 # The actual tests
-find "$tstDir" -maxdepth 1 -type d -not -name ".*" -print0 | xargs -0 -P "$PARALLEL" -n 1 -I {} \
+find "$tstDir" -maxdepth 1 -type d -not -name ".*" -print0 \
+ | xargs -0 -P "$PARALLEL" -n 1 -I {} \
 	sh -c '
 		if [ ! -d "$1" ] ; then
 			exit 1
@@ -39,10 +46,8 @@ find "$tstDir" -maxdepth 1 -type d -not -name ".*" -print0 | xargs -0 -P "$PARAL
 es="$?"
 
 # Handling return value
-if [ "$es" -eq 127 ] ; then
-	echo "There was no compare executable at $cmpDir !"
-elif [ "$es" -eq 126 ] ; then
-	echo "'compare' at $cmpDir is not executable !"
+if [ "$es" -eq 127 -o "$es" -eq 126 ] ; then
+	echo "Couldn't find executable shell. Something is  v e r y  wrong."
 elif [ "$es" -eq 125 ] ; then
 	echo "One or more tests were interrupted !"
 elif [ "$es" -eq 0 ] ; then
@@ -52,4 +57,3 @@ else
 fi
 
 exit "$es"
-
