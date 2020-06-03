@@ -1,0 +1,6 @@
+Test for a regression introduced  with commit
+	e8d98dafb8d4d1fd80e9d398cfbef7db1e2ccb73
+	font: remove dependency on symbol codes 
+where the lines of the images were spaced far too far apart.
+
+Originally reported as mpv/#7712
