@@ -37,11 +37,13 @@ find "$tstDir" -maxdepth 1 -type d -not -name ".*" -print0 \
 		if [ ! -d "$1" ] ; then
 			exit 1
 		fi
+		echo "[TEST]: $1"
 		if [ -f "$1"/scale ] ; then
 			"$2"compare "$1" -s "$(cat "$1"/scale)"
 		else
 			"$2"compare "$1"
 		fi
+		echo ""
 	' _ "{}" "$cmpDir"
 es="$?"
 
