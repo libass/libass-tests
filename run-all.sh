@@ -43,7 +43,9 @@ find "$tstDir" -maxdepth 1 -type d -not -name ".*" -print0 \
 		else
 			"$2"compare "$1"
 		fi
+		ret="$?"
 		echo ""
+		exit "$ret"
 	' _ "{}" "$cmpDir"
 es="$?"
 
