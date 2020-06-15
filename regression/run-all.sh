@@ -1,34 +1,14 @@
 #!/bin/sh
 
-# Janky stopgap script to run several tests
+#Defines PARALLEL, getDir, assertExe, assertUsage and xargsRetCode2Msg
+. ../lib.sh
 
-PARALLEL="1"
-
-usage() {
-	echo 'run-all.sh [<dir of compare executable>] [<root dir of tests>]'
-}
-
-getDir()
-(
-	dirr="${1:-./}"
-	dirr="$(echo -n "$dirr" | sed -e 's/\/$//')""/"
-	echo "$dirr"
-)
-
-if [ "$#" -gt 2 ] ; then
-	echo "Too many arguments !"
-	usage()
-	exit 1
-fi
+assertUsage "compare" "$@"
 
 cmpDir="$(getDir $1)"
 tstDir="$(getDir $2)"
 
-if [ ! -x "$cmpDir"compare ] ; then
-	echo "There's no 'compare' in the given location or it is not executable !"
-	echo "   ($cmpDir)"
-	exit 1
-fi
+assertExe "$cmpDir/compare"
 
 # The actual tests
 find "$tstDir" -maxdepth 1 -type d -not -name ".*" -print0 \
@@ -49,15 +29,6 @@ find "$tstDir" -maxdepth 1 -type d -not -name ".*" -print0 \
 	' _ "{}" "$cmpDir"
 es="$?"
 
-# Handling return value
-if [ "$es" -eq 127 -o "$es" -eq 126 ] ; then
-	echo "Couldn't find executable shell. Something is  v e r y  wrong."
-elif [ "$es" -eq 125 ] ; then
-	echo "One or more tests were interrupted !"
-elif [ "$es" -eq 0 ] ; then
-	echo "All tests passed !"
-else
-	echo "One or more tests failed. See messages above !"
-fi
+xargsRetCode2Msg "$es"
 
 exit "$es"
