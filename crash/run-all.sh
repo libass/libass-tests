@@ -43,7 +43,7 @@ find "$tstDir" -maxdepth 1 -type f -name "*.ass" -not -name ".*" -print0 \
 		fi
 
 		#Actual test
-		echo "[CRASH-TEST]: $1"
+		echo "[CRASH-TEST]: $rem"
 		printf "  From: %7dms\n  To:   %7dms\n  fps:  %7d\n" \
 				"$t_s" "$t_e" "$fps"
 
