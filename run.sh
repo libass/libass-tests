@@ -4,7 +4,7 @@ usage() {
 	echo "run.sh <compare dir> <profile dir>" 1>&2
 }
 
-cd "$(dirname $0)"
+cd "$(dirname "$0")"
 
 if [ "$#" -ne 2 ] ; then
 	usage
