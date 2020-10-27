@@ -1,19 +1,9 @@
-The samples are collected from reported issues and the test are
-meant to prevent these regressions from re-emerging in master.
- (or serve as a reminder that the regressions have not
-  yet been dealt with, in case they haven't been resolved yet)
+Some karaoke samples from old issues:
 
 216-vertical:
-	A regression introduced out of order filling at some point
-	commit
-		d3286d8a5e3a0186457b8596c2809866fa59d052
-		renderer: improve handling of subpixel shift)
-	"fixed" this again (by chance)
+	Vertical Karaoke (@ + rotation) was broken in several releases
 
 357-k-and-kf-desynced:
-	This is a regression _introduced_ with commit (same as 216)
-		d3286d8a5e3a0186457b8596c2809866fa59d052
-		renderer: improve handling of subpixel shift)
-	Here the \kf event starts filling the text _before_ the preceeding
-	\k event finished.
+	Between 0.14 and 0.15 the \kf event starts filling the text _before_ the
+	preceeding \k event finished.
 

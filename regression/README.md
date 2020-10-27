@@ -1,9 +1,12 @@
-## Some Regression Tests for Libass
+J## Some Regression Tests for Libass
 
-Here are some regression tests for (libass)[https://github.com/libass/libass]
-requiring (un)merged patches.
-If patches get merged the test may also be moved to the regular libass
-regression test infrastructure. Until then here's a stopgap solution:
+This directory contains regression test.
+Regression tests render the output via `compare` and report deviation from a
+known good output. This way regressions and other unintended side-effects can
+hopefully be discovered early before patches get merged.
+
+Tests are grouped into direct child directory of the current directory.
+More information regaridng the test directory-structure can be found below.
 
 ### Run test
 Run all tests with
@@ -20,16 +23,22 @@ Run a single test in `tdir` with:
  fi
 ```
 
-### How to add tests (stopgap)
-Each non-dot folder except `fonts` contains one set of tests.
+### Directory strucutre
+Each non-dot folder contains one group of active tests.
+`.fonts` contains all font files.
 
-If a if a file named `scale` is present in a test directory its content will be 
-catted and used as the scale value for the test.  
-Otherwise the default scale value will be used.
+Inside a test-dir Multiple ass-files and png-files may be present according to
+`compare`'s format requirements.
 
-### Directory-Hierachy (stopgap)
-Each non-dot folder contains a set of tests.
-Subdirectories of test directories will be ignored.
+Furthermore a test dir may contain:
 
-All Fonts must be located in `.fonts` and symlinked with a relative path in the 
-test-directories to avoid duplications.
+ - `desc` a small text file containing information about the tests
+ - `scale` a single line text file, whose content will be passed to `compare` as
+    its `scale` parameter. Must satisfy `compare`'s requirements.
+ - Symlinks to font files for `compare` to use. Read below.
+
+### Fonts
+To take the system font wildcard out of the equation, `compare` disables system
+font provider and only uses font files from each tests directory. To avoid
+unnecessary duplicates all font files are inside the `regression/.font` dir;
+required fonts are symlinked into the test dir.
