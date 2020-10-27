@@ -28,6 +28,17 @@ Those tests should try to cover many codepaths and unusual combinations, that
 are easily forgotten to take into account, although they don't need to cover
 insane inputs as fuzzing might produce.
 
+## Run all tests
+```sh
+PARALLEL=1 ./run.sh <libass-dir>/compare <libass-dir>/profile
+```
+
+How many tests are run simultaneously can be controlled with the `PARALLEL`
+environment variable, if not set it will defaul to `1`(sequential).
+Running test in parallel decreases test time, but mangles the output. If any
+tests fails, rerunning in sequential mode is advised to get a proper view on
+what's failing.
+
 ## Requirements
 The shell scripts assume the presence of the non-POSIX
 `xargs -0` and `find -print0` extensions. Otherwise purely POSIX.

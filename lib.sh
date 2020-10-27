@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PARALLEL="1"
+PARALLEL="${PARALLEL:-1}"
 
 # Interpret xarg return codes
 xargsRetCode2Msg() {
