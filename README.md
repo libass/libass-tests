@@ -7,7 +7,8 @@ unintended side-effects/regression early before they hit master.
 Testing is best done with a libass build having ASAN and UBSAN enabled.
 E.g.:
 ```sh
-make clean && make CC="gcc -fsanitize=address -fsanitize=undefined -fno-sanitize-recover" -j6
+make clean \
+ && make CC="gcc -fsanitize=address -fsanitize=undefined -fsanitize=float-cast-overflow -fno-sanitize-recover=all" -j6
 ```
 *(As soon as the current division-by-zero-bugs are fixed
 `-fsanitize=float-divide-by-zero` should be added as well)*
