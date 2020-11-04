@@ -23,7 +23,7 @@ xargsRetCode2Msg() {
 getDir()
 (
 	dirr="${1:-./}"
-	dirr="$(echo -n "$dirr" | sed -e 's/\/$//')""/"
+	dirr="${dirr%/}/"
 	echo "$dirr"
 )
 
