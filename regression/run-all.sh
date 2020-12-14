@@ -11,7 +11,7 @@ tstDir="$(getDir $2)"
 assertExe "$cmpDir/compare"
 
 # The actual tests
-find "$tstDir" -maxdepth 1 -type d -not -name ".*" -print0 \
+find "$tstDir" -maxdepth 1 -type d ! -name ".*" -print0 \
  | xargs -0 -P "$PARALLEL" -n 1 -I {} \
 	sh -c '
 		if [ ! -d "$1" ] ; then

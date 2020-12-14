@@ -14,7 +14,7 @@ assertExe "$prfDir/profile"
 #Also the filename must end with
 #    _<start time in ms>_<end_time in ms>(_<fps>)?.ass
 #    If _<fps> is missing it defaults to 25fps
-find "$tstDir" -maxdepth 1 -type f -name "*.ass" -not -name ".*" -print0 \
+find "$tstDir" -maxdepth 1 -type f -name "*.ass" ! -name ".*" -print0 \
  | xargs -0 -P "$PARALLEL" -n 1 -I {} \
 	sh -c '
 		isInvalidArg() {
