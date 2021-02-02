@@ -15,7 +15,7 @@ assertExe "$prfDir/profile"
 #    _<start time in ms>_<end_time in ms>(_<fps>)?.ass
 #    If _<fps> is missing it defaults to 25fps
 find "$tstDir" -maxdepth 1 -type f -name "*.ass" ! -name ".*" -print0 \
- | xargs -0 -P "$PARALLEL" -n 1 -I {} \
+ | xargs -0 -P "$PARALLEL" -I '{}' \
 	sh -c '
 		isInvalidArg() {
 			if echo "$1" | grep -q -E "^[0-9]+(\.[0-9]+)?$" ; then

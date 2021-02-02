@@ -12,7 +12,7 @@ assertExe "$cmpDir/compare"
 
 # The actual tests
 find "$tstDir" -maxdepth 1 -type d ! -name ".*" -print0 \
- | xargs -0 -P "$PARALLEL" -n 1 -I {} \
+ | xargs -0 -P "$PARALLEL" -I '{}' \
 	sh -c '
 		if [ ! -d "$1" ] ; then
 			exit 1
