@@ -31,6 +31,8 @@ Style: ED: Latin,Bubblegum Sans,32,&H001C8FDF,&H00C3C3C3,&H00000000,&H00000000,-
 Style: ED: CJK,IPAexGothic,32,&H001C8FDF,&H00B6B6B6,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,2,2,8,10,10,550,1
 Style: ED: Background,Bubblegum Sans,32,&H00FFFFFF,&H000000FF,&H00EAEAEA,&H00000000,-1,0,0,0,100,100,0,0,3,7,0,8,10,10,550,1
 Style: ED: Deutsch,Bubblegum Sans,32,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,2,2,2,10,10,10,1
+Style: mt,@,48,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,10,10,10,1
+Style: mt2,,48,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,10,10,10,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -89,3 +91,9 @@ Dialogue: 1,0:01:31.81,0:01:41.60,ED: Latin,,0,0,0,,{\kf13}{\fscx90\fscy90}{\kf3
 Dialogue: 0,0:01:43.00,0:01:46.00,Default,,0,0,0,,{\an5\b1\fsp3\org(639,391.5)\pos(637.5,257)}{\frz15}N{\frz13}E{\frz11}X{\frz09}T{\frz06} {\frz04}E{\frz00}P{\frz-04}I{\frz-06}S{\frz-11}O{\frz-14}D{\frz-17}E
 Dialogue: 0,0:01:43.00,0:01:46.00,Type,,0,0,0,,{\pos(571,368)}Never
 Dialogue: 0,0:01:44.00,0:01:46.00,Default,,0,0,0,,{\fade(0,1200)}ciao
+Dialogue: 0,0:01:45.00,0:01:46.00,Default,,0,0,0,,
+Dialogue: 0,0:01:45.00,0:01:46.00,mt,,0,0,0,,{\fs1\i1\fsc50}empty
+Dialogue: 0,0:01:45.00,0:01:46.00,mt,,0,0,0,,
+Dialogue: 0,0:01:45.00,0:01:46.00,mt2,,0,0,0,,{\fs1\i1\fsc50}empty
+Dialogue: 0,0:01:45.00,0:01:46.00,mt2,,0,0,0,,
+Dialogue: 0,0:01:45.00,0:01:46.00,,,0,0,0,,EMPTY
