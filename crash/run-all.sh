@@ -44,7 +44,7 @@ find "$tstDir" -maxdepth 1 -type f -name "*.ass" ! -name ".*" -print0 \
 
 		#Actual test
 		echo "[CRASH-TEST]: $rem"
-		printf "  From: %7dms\n  To:   %7dms\n  fps:  %7.2f\n" \
+		printf "  From: %7.2fs\n  To:   %7.2fs\n  fps:  %7.2f\n" \
 				"$t_s" "$t_e" "$fps"
 
 		#Would be nice if profile had a -q / --quiet option
