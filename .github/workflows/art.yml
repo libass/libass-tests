@@ -18,13 +18,13 @@ jobs:
         arch: [i386]
         suite: [buster]
         acflags: [""]
-        chroot-rev: [0]
+        chroot-rev: [1]
         include:
           # Yes, GHA's kernel seems to support x32 syscalls (see config in /boot)
           - arch: x32
             suite: sid
             port: yes
-            chroot-rev: 0
+            chroot-rev: 1
       #    # Enable sanitisers for native build
       #    - arch: amd64
       #      sanity: yes
@@ -113,6 +113,7 @@ jobs:
           sudo $OPRE chroot "$CHR_DIR" $IPRE /debootstrap/debootstrap --second-stage
           sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/bash -c '
             export DEBIAN_FRONTEND=noninteractive
+            set -e
             apt-get install debian-ports-archive-keyring
             apt-get update && apt-get -y dist-upgrade
 
@@ -120,7 +121,7 @@ jobs:
             echo "APT::Get::Install-Suggests \"false\";"   >> /etc/apt/apt.conf.d/02norecommends
 
             apt-get install -y \
-              git git-lfs ca-certificates \
+              git ca-certificates \
               autoconf automake make libtool pkg-config \
               gcc nasm \
               libfreetype6-dev libfribidi-dev libfontconfig-dev libharfbuzz-dev
@@ -142,6 +143,8 @@ jobs:
       - name: Inside Chroot
         run: |
           sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/bash -c '
+            export DEBIAN_FRONTEND=noninteractive
+            set -e
             uname -a
             gcc -dumpmachine
             echo "Greetings from this neat chroot!"
