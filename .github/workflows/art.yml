@@ -48,14 +48,14 @@ jobs:
       # Each repo is allowed up to 5GB total cache
       # use it to store our (compressed) chroot dirs
       # (cache is branch scoped)
-      - name: retrieve chroot cache
+      - name: Retrieve Cached Chroots
         uses: actions/cache@v2.1.3
         id: cache
         with:
           path: /var/chroot/imgs
           key: ${{ matrix.suite }}-${{ matrix.arch }}-${{ matrix.chroot-rev }}
 
-      - name: Determine Chroot Prefixes
+      - name: Determine Configuration
         run: |
           # Map debian arch/abi name to qemu arch name
           case "${{ matrix.arch }}" in
@@ -147,7 +147,7 @@ jobs:
             runuser -u artci mkdir /home/artci/workarea-skel
           '
 
-      - name: Load and Update Chroot
+      - name: Load and Update Cached Chroot
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
           sudo tar --zstd -xf /var/chroot/imgs/"$CHR_DIR".tar.zstd
@@ -248,7 +248,7 @@ jobs:
           '
 
 
-      - name: Cache Chroot
+      - name: Save Chroot to Cache
         run: |
           # Clean chroot
           sudo rm -fr "$CHR_DIR/home/artci/workarea"
