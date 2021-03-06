@@ -3,7 +3,8 @@ name: Automatic Regression Tests
 on:
   push:
     branches: [master, ci]
-#  schedule:
+  schedule:
+    - cron: '22 * * * *'
 #    - cron: '22 4 * * *'
   workflow_dispatch:
 
