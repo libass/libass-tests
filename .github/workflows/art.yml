@@ -14,7 +14,7 @@ jobs:
     # one additional little and big endian arch each
     strategy:
       matrix:
-        arch: [amd64, i386, ppc64el, s390x]
+        arch: [amd64, i386, ppc64el, s390x, mips64el]
         suite: [buster]
         chroot-rev: [7]
         confopts: [""]
@@ -22,6 +22,10 @@ jobs:
         include:
           # Yes, GHA's kernel supports x32 syscalls
           - arch: x32
+            suite: sid
+            port: yes
+            chroot-rev: 7
+          - arch: riscv64
             suite: sid
             port: yes
             chroot-rev: 7
