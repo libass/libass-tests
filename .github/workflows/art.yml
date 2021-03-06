@@ -25,9 +25,9 @@ jobs:
             suite: sid
             port: yes
             chroot-rev: 7
-      #    # Enable sanitisers for native build
-      #    - arch: amd64
-      #      sanity: yes
+          # Enable sanitisers for native build
+          - arch: amd64
+            sanity: sane?
 
     steps:
       - name: Prepare System
@@ -169,9 +169,10 @@ jobs:
             export SANITY="'"${{ matrix.sanity }}"'"
             export LIBASS_CONF="'"${{ matrix.confopts }}"'"
             export LIBASS_CFLAGS="'"${{ matrix.cflags }}"'"
-            printf "Toolchain:   %s\\n" "$(gcc -dumpmachine)"
-            printf "Kernel-Arch: %s\\n" "$(uname -m)"
-            printf "Debian Ver.: %s\\n" "$(cat /etc/debian_version)"
+            printf "Toolchain:    %s\\n" "$(gcc -dumpmachine)"
+            printf "Kernel-Arch:  %s\\n" "$(uname -m)"
+            printf "Debian Ver.:  %s\\n" "$(cat /etc/debian_version)"
+            printf "Sanity-Check: %s\\n" "$SANITY"
           ' > env.sh
 
           # Build libass
@@ -187,7 +188,7 @@ jobs:
             if [ -z "$SANITY" ] ; then
               make -j 2
             else
-              make CC=\"gcc -fsanitize=address -fsanitize=undefined -fsanitize=float-cast-overflow -fno-sanitize-recover=all\" -j 2
+              make CC="gcc -fsanitize=address -fsanitize=undefined -fsanitize=float-cast-overflow -fno-sanitize-recover=all" -j 2
             fi
           ' > build-libass.sh
 
