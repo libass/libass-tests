@@ -17,7 +17,7 @@ jobs:
       matrix:
         arch: [i386]
         suite: [buster]
-        chroot-rev: [6]
+        chroot-rev: [7]
         confopts: [""]
         cflags: [""]
        #include:
@@ -25,7 +25,7 @@ jobs:
        #   - arch: x32
        #     suite: sid
        #     port: yes
-       #     chroot-rev: 6
+       #     chroot-rev: 7
       #    # Enable sanitisers for native build
       #    - arch: amd64
       #      sanity: yes
@@ -35,7 +35,7 @@ jobs:
         run: |
           sudo apt-get install -y \
                 debian-keyring debian-archive-keyring debian-ports-archive-keyring \
-                debootstrap qemu-user-static
+                debootstrap qemu-user-static zstd
           sudo mkdir -p /var/chroot/imgs
           sudo chmod -R 777 /var/chroot
           luser="$(whoami)"
@@ -54,14 +54,14 @@ jobs:
         run: |
           # Map debian arch/abi name to qemu arch name
           case "${{ matrix.arch }}" in
-            amd64) qarch="x86_64"  ;;
-            arm64) qarch="aarch64" ;;
+            amd64|x32) qarch="x86_64"  ;;
+            arm64)     qarch="aarch64" ;;
             # TODO figure out "armel, armhf <-> arm, armeb"
             *) qarch="${{ matrix.arch }}" ;;
           esac
 
           # Make sure we have an qemu layer available
-          if [ x"$qarch" != xx32  ] && [ x"$qarch" != xx86_64 ] \
+          if [ x"$qarch" != xi386  ] && [ x"$qarch" != xx86_64 ] \
              && [ ! -x "/usr/bin/qemu-${qarch}-static" ]
           then
             echo "Arch '${{ matrix.arch }}/${qarch}' not supported!"
@@ -142,7 +142,7 @@ jobs:
       - name: Load and Update Chroot
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
-          sudo tar xzf /var/chroot/imgs/"$CHR_DIR".tar.gz
+          sudo tar --zstd -xf /var/chroot/imgs/"$CHR_DIR".tar.zstd
           if [ ! -z "${IPRE}" ] ; then
             sudo cp "${IPRE}" "${CHR_DIR}${IPRE}"
           fi
@@ -244,7 +244,7 @@ jobs:
           sudo cp -a "$CHR_DIR/home/artci/workarea-skel" "$CHR_DIR/home/artci/workarea"
           # Compress and store chroot in cache dir
           luser="$(whoami)"
-          sudo tar czf /var/chroot/imgs/"$CHR_DIR".tar.gz "$CHR_DIR"
-          sudo chown $luser:$luser /var/chroot/imgs/"$CHR_DIR".tar.gz
+          sudo tar --zstd -cf /var/chroot/imgs/"$CHR_DIR".tar.zstd "$CHR_DIR"
+          sudo chown $luser:$luser /var/chroot/imgs/"$CHR_DIR".tar.zstd
           #sudo rm -rf "$CHR_DIR"
-          #sudo du -sh "$CHR_DIR" /var/chroot-imgs/"$CHR_DIR".tar.gz
+          #sudo du -sh "$CHR_DIR" /var/chroot-imgs/"$CHR_DIR".tar.zstd
