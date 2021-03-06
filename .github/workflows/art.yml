@@ -12,10 +12,9 @@ jobs:
     runs-on: ubuntu-20.04
     # Run on each arch we support ASM on and furthemore
     # one additional little and big endian arch each
-        #arch: [amd64, i386, ppc64el, s390x]
     strategy:
       matrix:
-        arch: [i386]
+        arch: [amd64, i386, ppc64el, s390x]
         suite: [buster]
         chroot-rev: [7]
         confopts: [""]
@@ -57,6 +56,7 @@ jobs:
             amd64|x32) qarch="x86_64"  ;;
             arm64)     qarch="aarch64" ;;
             # TODO figure out "armel, armhf <-> arm, armeb"
+            ppc64el)   qarch="ppc64le" ;;
             *) qarch="${{ matrix.arch }}" ;;
           esac
 
@@ -109,11 +109,14 @@ jobs:
                            ${{ matrix.suite }} "$CHR_DIR" "$crepo"
 
           if [ ! -z "${IPRE}" ] ; then
+            echo "Copy qemu-binary '${IPRE}' into chroot."
+            set -x
             sudo cp "${IPRE}" "${CHR_DIR}${IPRE}"
+            set +x
           fi
 
           # ime we don't need to mount everything for those setup steps
-          sudo $OPRE chroot "$CHR_DIR" $IPRE /debootstrap/debootstrap --second-stage
+          sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash /debootstrap/debootstrap --second-stage
           sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/bash -c '
             export DEBIAN_FRONTEND=noninteractive
             set -e
