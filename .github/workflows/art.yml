@@ -20,12 +20,12 @@ jobs:
         chroot-rev: [7]
         confopts: [""]
         cflags: [""]
-       #include:
-       #   # Yes, GHA's kernel supports x32 syscalls
-       #   - arch: x32
-       #     suite: sid
-       #     port: yes
-       #     chroot-rev: 7
+        include:
+          # Yes, GHA's kernel supports x32 syscalls
+          - arch: x32
+            suite: sid
+            port: yes
+            chroot-rev: 7
       #    # Enable sanitisers for native build
       #    - arch: amd64
       #      sanity: yes
