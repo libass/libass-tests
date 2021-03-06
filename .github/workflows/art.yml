@@ -17,7 +17,7 @@ jobs:
       matrix:
         arch: [amd64, i386, ppc64el, s390x, mips64el]
         suite: [buster]
-        chroot-rev: [7]
+        chroot-rev: [8]
         confopts: [""]
         cflags: [""]
         include:
@@ -122,7 +122,7 @@ jobs:
 
           # Set additional packages for some archs
           case "${{ matrix.arch }}" in
-            x86_64)   add_pkgs="nasm libasan5 libubsan1" ;;
+            amd64)    add_pkgs="nasm libasan5 libubsan1" ;;
             x32|i386) add_pkgs="nasm" ;;
             *)        add_pkgs="" ;;
           esac
