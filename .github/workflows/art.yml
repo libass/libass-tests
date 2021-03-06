@@ -42,6 +42,7 @@ jobs:
 
       # Each repo is allowed up to 5GB total cache
       # use it to store our (compressed) chroot dirs
+      # (cache is branch scoped)
       - name: retrieve chroot cache
         uses: actions/cache@v2.1.3
         id: cache
@@ -53,10 +54,11 @@ jobs:
         run: |
           # Map debian arch/abi name to qemu arch name
           case "${{ matrix.arch }}" in
-            amd64|x32) qarch="x86_64"  ;;
-            arm64)     qarch="aarch64" ;;
-            # TODO figure out "armel, armhf <-> arm, armeb"
-            ppc64el)   qarch="ppc64le" ;;
+            amd64|x32)   qarch="x86_64"  ;;
+            arm64)       qarch="aarch64" ;;
+            armel|armhf) qarch="arm"     ;; # Untested
+            arm)         qarch="armeb"   ;; # Untested
+            ppc64el)     qarch="ppc64le" ;;
             *) qarch="${{ matrix.arch }}" ;;
           esac
 
@@ -102,7 +104,7 @@ jobs:
             ckeyr="/usr/share/keyrings/debian-archive-keyring.gpg"
           fi
 
-          # To  avoid branches, pretend every arch is a foreign arch
+          # For simplicity, pretend every arch is foreign
           sudo debootstrap --foreign --arch=${{ matrix.arch }} \
                            --variant=minbase  \
                            --keyring="$ckeyr" \
@@ -110,34 +112,32 @@ jobs:
 
           if [ ! -z "${IPRE}" ] ; then
             echo "Copy qemu-binary '${IPRE}' into chroot."
-            set -x
             sudo cp "${IPRE}" "${CHR_DIR}${IPRE}"
-            set +x
           fi
+
+          # Set additional packages for some archs
+          case "${{ matrix.arch }}" in
+            x86_64)   add_pkgs="nasm libasan5 libubsan1" ;;
+            x32|i386) add_pkgs="nasm" ;;
+            *)        add_pkgs="" ;;
+          esac
 
           # ime we don't need to mount everything for those setup steps
           sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash /debootstrap/debootstrap --second-stage
-          sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/bash -c '
+          sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash -c '
             export DEBIAN_FRONTEND=noninteractive
             set -e
             apt-get install debian-ports-archive-keyring
             apt-get update && apt-get -y dist-upgrade
 
-            echo "APT::Get::Install-Recommends \"false\";" >  /etc/apt/apt.conf.d/02norecommends
-            echo "APT::Get::Install-Suggests \"false\";"   >> /etc/apt/apt.conf.d/02norecommends
-
-            apt-get install -y \
+            apt-get install -y --no-install-recommends --no-install-suggests \
               git ca-certificates \
               autoconf automake make libtool pkg-config \
-              gcc nasm \
-              libfreetype6-dev libfribidi-dev libfontconfig-dev libharfbuzz-dev libpng-dev
+              gcc \
+              libfreetype6-dev libfribidi-dev libfontconfig-dev libharfbuzz-dev libpng-dev \
+              '"$add_pkgs"'
 
-            # Limit sanitisers to amd64 for now
-            if [ "'"${{ matrix.arch }}"'" = amd64 ] ; then
-              apt-get install -y libasan5 libubsan1
-            fi
-
-            useradd -m -d /home/artci -p notrelevant -s /bin/bash -U artci
+            useradd -m -d /home/artci -p notrelevant -s /bin/dash -U artci
             runuser -u artci mkdir /home/artci/workarea
             runuser -u artci mkdir /home/artci/workarea-skel
           '
@@ -147,9 +147,10 @@ jobs:
         run: |
           sudo tar --zstd -xf /var/chroot/imgs/"$CHR_DIR".tar.zstd
           if [ ! -z "${IPRE}" ] ; then
+            echo "Update qemu-binary '${IPRE}' ..."
             sudo cp "${IPRE}" "${CHR_DIR}${IPRE}"
           fi
-          sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/bash -c '
+          sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash -c '
             export DEBIAN_FRONTEND=noninteractive
             apt-get update && apt-get -y dist-upgrade
           '
@@ -168,8 +169,9 @@ jobs:
             export SANITY="'"${{ matrix.sanity }}"'"
             export LIBASS_CONF="'"${{ matrix.confopts }}"'"
             export LIBASS_CFLAGS="'"${{ matrix.cflags }}"'"
-            cat /etc/os-release
-            gcc -dumpmachine
+            printf "Toolchain:   %s\\n" "$(gcc -dumpmachine)"
+            printf "Kernel-Arch: %s\\n" "$(uname -m)"
+            printf "Debian Ver.: %s\\n" "$(cat /etc/debian_version)"
           ' > env.sh
 
           # Build libass
@@ -219,14 +221,14 @@ jobs:
 
       - name: Chroot - Build Libass
         run: |
-          sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/bash -c '
-            su -c '\''/bin/sh -c "cd ~/workarea; bash ./build-libass.sh"'\'' --login artci
+          sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash -c '
+            su -c '\''/bin/sh -c "cd ~/workarea; dash ./build-libass.sh"'\'' --login artci
           '
 
       - name: Chroot - Regression Tests
         run: |
-          sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/bash -c '
-            su -c '\''/bin/sh -c "cd ~/workarea; bash ./test-libass.sh"'\'' --login artci
+          sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash -c '
+            su -c '\''/bin/sh -c "cd ~/workarea; dash ./test-libass.sh"'\'' --login artci
           '
 
 
