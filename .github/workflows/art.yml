@@ -17,35 +17,38 @@ jobs:
       matrix:
         arch: [i386]
         suite: [buster]
-        acflags: [""]
-        chroot-rev: [1]
-        include:
-          # Yes, GHA's kernel seems to support x32 syscalls (see config in /boot)
-          - arch: x32
-            suite: sid
-            port: yes
-            chroot-rev: 1
+        chroot-rev: [6]
+        confopts: [""]
+        cflags: [""]
+       #include:
+       #   # Yes, GHA's kernel supports x32 syscalls
+       #   - arch: x32
+       #     suite: sid
+       #     port: yes
+       #     chroot-rev: 6
       #    # Enable sanitisers for native build
       #    - arch: amd64
       #      sanity: yes
 
     steps:
-      # Each repo is allowed up to 5GB total cache
-      # use it to store our (compressed) chroot dirs
-      - name: retrieve chroot cache
-        uses: actions/cache@v2
-        id: cache
-        with:
-          path: /var/chroot-imgs
-          key: ${{ matrix.suite }}-${{ matrix.arch }}-${{ matrix.chroot-rev }}
-
       - name: Prepare System
         run: |
           sudo apt-get install -y \
                 debian-keyring debian-archive-keyring debian-ports-archive-keyring \
                 debootstrap qemu-user-static
-          [ -d /var/chroot-imgs ] || sudo mkdir /var/chroot-imgs
+          sudo mkdir -p /var/chroot/imgs
+          sudo chmod -R 777 /var/chroot
+          luser="$(whoami)"
+          sudo chown $luser:$luser /var/chroot/imgs
 
+      # Each repo is allowed up to 5GB total cache
+      # use it to store our (compressed) chroot dirs
+      - name: retrieve chroot cache
+        uses: actions/cache@v2.1.3
+        id: cache
+        with:
+          path: /var/chroot/imgs
+          key: ${{ matrix.suite }}-${{ matrix.arch }}-${{ matrix.chroot-rev }}
 
       - name: Determine Chroot Prefixes
         run: |
@@ -124,7 +127,12 @@ jobs:
               git ca-certificates \
               autoconf automake make libtool pkg-config \
               gcc nasm \
-              libfreetype6-dev libfribidi-dev libfontconfig-dev libharfbuzz-dev
+              libfreetype6-dev libfribidi-dev libfontconfig-dev libharfbuzz-dev libpng-dev
+
+            # Limit sanitisers to amd64 for now
+            if [ "'"${{ matrix.arch }}"'" = amd64 ] ; then
+              apt-get install -y libasan5 libubsan1
+            fi
 
             useradd -m -d /home/artci -p notrelevant -s /bin/bash -U artci
             runuser -u artci mkdir /home/artci/workarea
@@ -134,34 +142,109 @@ jobs:
       - name: Load and Update Chroot
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
-          sudo tar xzf /var/chroot-imgs/"$CHR_DIR".tar.gz
+          sudo tar xzf /var/chroot/imgs/"$CHR_DIR".tar.gz
+          if [ ! -z "${IPRE}" ] ; then
+            sudo cp "${IPRE}" "${CHR_DIR}${IPRE}"
+          fi
           sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/bash -c '
             export DEBIAN_FRONTEND=noninteractive
             apt-get update && apt-get -y dist-upgrade
           '
 
-      - name: Inside Chroot
+
+      - name: Prepare Chroot Jobs
+        run: |
+          cd "$CHR_DIR"/home/artci/workarea
+          # Make sure we can write to job scripts
+          sudo touch env.sh build-libass.sh test-libass.sh
+          sudo chmod 777 env.sh build-libass.sh test-libass.sh
+          echo '#!/bin/sh
+            set -e
+            export DEBIAN_FRONTEND=noninteractive
+            export LC_ALL=C.UTF-8
+            export SANITY="'"${{ matrix.sanity }}"'"
+            export LIBASS_CONF="'"${{ matrix.confopts }}"'"
+            export LIBASS_CFLAGS="'"${{ matrix.cflags }}"'"
+            cat /etc/os-release
+            gcc -dumpmachine
+          ' > env.sh
+
+          # Build libass
+          echo '#!/bin/sh
+            . ./env.sh
+            git clone --depth=2 https://github.com/libass/libass.git libass
+            cd libass
+            echo "Testing libass commit:"
+            git log -1 --format=%H
+            echo ""
+            ./autogen.sh
+            CFLAGS="$CFLAGS $LIBASS_CFLAGS" ./configure "$LIBASS_CONF" --enable-profile --enable-compare
+            if [ -z "$SANITY" ] ; then
+              make -j 2
+            else
+              make CC=\"gcc -fsanitize=address -fsanitize=undefined -fsanitize=float-cast-overflow -fno-sanitize-recover=all\" -j 2
+            fi
+          ' > build-libass.sh
+
+          # Test libass
+          echo '#!/bin/sh
+            . ./env.sh
+            # Checkout via action did not work well with chroot
+            git clone --depth=1 https://github.com/${{ github.repository }}.git libass-tests
+            cd libass-tests
+            if [ x"${{ github.ref }}" != x ] ; then
+              git fetch --depth=1 origin ${{ github.ref }}:artci
+              git checkout --force artci
+            else
+              echo "Could not determine Ref! Fallback to current master."
+            fi
+            echo "Using testsuite from commit:"
+            git log -1 --format=%H
+            echo ""
+            ./run.sh ../libass/compare ../libass/profile
+          ' > test-libass.sh
+
+
+      - name: Mount Chroot
+        run: |
+          sudo sh -c "
+            mount --rbind /sys/  $CHR_DIR/sys  ;
+            mount --rbind /proc/ $CHR_DIR/proc ;
+            mount --rbind /dev/  $CHR_DIR/dev  ;
+          "
+
+
+      - name: Chroot - Build Libass
         run: |
           sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/bash -c '
-            export DEBIAN_FRONTEND=noninteractive
-            set -e
-            uname -a
-            gcc -dumpmachine
-            echo "Greetings from this neat chroot!"
+            su -c '\''/bin/sh -c "cd ~/workarea; bash ./build-libass.sh"'\'' --login artci
           '
-          #TODO: copy env source file, exe script into chroot
-          #TODO: mount chroot
-          #TODO: exec script in chroot (/home/artci/workarea)
-          #      Let chroot write succces into a file
-          #TODO: umount
-          #TODO: Read and report succes state
+
+      - name: Chroot - Regression Tests
+        run: |
+          sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/bash -c '
+            su -c '\''/bin/sh -c "cd ~/workarea; bash ./test-libass.sh"'\'' --login artci
+          '
+
+
+      - name: Umount Chroot
+        run: |
+          sudo sh -c '
+            for m in sys proc dev ; do
+              mount --make-rslave '"$CHR_DIR"'/$m
+              umount -R '"$CHR_DIR"'/$m
+            done
+          '
 
 
       - name: Cache Chroot
         run: |
           # Clean chroot
           sudo rm -fr "$CHR_DIR/home/artci/workarea"
-          sudo cp -R "$CHR_DIR/home/artci/workarea-skel" "$CHR_DIR/home/artci/workarea"
+          sudo cp -a "$CHR_DIR/home/artci/workarea-skel" "$CHR_DIR/home/artci/workarea"
           # Compress and store chroot in cache dir
-          sudo tar czf /var/chroot-imgs/"$CHR_DIR".tar.gz "$CHR_DIR"
-          sudo du -sh "$CHR_DIR" /var/chroot-imgs/"$CHR_DIR".tar.gz
+          luser="$(whoami)"
+          sudo tar czf /var/chroot/imgs/"$CHR_DIR".tar.gz "$CHR_DIR"
+          sudo chown $luser:$luser /var/chroot/imgs/"$CHR_DIR".tar.gz
+          #sudo rm -rf "$CHR_DIR"
+          #sudo du -sh "$CHR_DIR" /var/chroot-imgs/"$CHR_DIR".tar.gz
