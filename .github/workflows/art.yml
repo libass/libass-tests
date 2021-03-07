@@ -25,11 +25,11 @@ jobs:
           - arch: x32
             suite: sid
             port: yes
-            chroot-rev: 7
+            chroot-rev: 8
           - arch: riscv64
             suite: sid
             port: yes
-            chroot-rev: 7
+            chroot-rev: 8
           # Enable sanitisers for native build
           - arch: amd64
             sanity: sane?
@@ -45,17 +45,9 @@ jobs:
           luser="$(whoami)"
           sudo chown $luser:$luser /var/chroot/imgs
 
-      # Each repo is allowed up to 5GB total cache
-      # use it to store our (compressed) chroot dirs
-      # (cache is branch scoped)
-      - name: Retrieve Cached Chroots
-        uses: actions/cache@v2.1.3
-        id: cache
-        with:
-          path: /var/chroot/imgs
-          key: ${{ matrix.suite }}-${{ matrix.arch }}-${{ matrix.chroot-rev }}
 
       - name: Determine Configuration
+        id: config
         run: |
           # Map debian arch/abi name to qemu arch name
           case "${{ matrix.arch }}" in
@@ -89,10 +81,25 @@ jobs:
               ;;
           esac
 
+          cache_period="$(printf '%d/44\n' "$(date +%j)" | bc)"
+          cache_period="$(printf "%d-%02d" "$(date +%Y)" "$cache_period")"
+          echo "::set-output name=cache_period::${cache_period}"
+
           echo "QEMU_ARCH=${qarch}"   >> $GITHUB_ENV
           echo "OPRE=${outer_prefix}" >> $GITHUB_ENV
           echo "IPRE=${inner_prefix}" >> $GITHUB_ENV
           echo "CHR_DIR=debian-${{ matrix.suite }}-${{ matrix.arch }}" >> $GITHUB_ENV
+
+
+      # Each repo is allowed up to 5GB total cache
+      # use it to store our (compressed) chroot dirs
+      # (cache is branch scoped)
+      - name: Retrieve Cached Chroots
+        uses: actions/cache@v2.1.3
+        id: cache
+        with:
+          path: /var/chroot/imgs
+          key: ${{ matrix.suite }}-${{ matrix.arch }}-${{ matrix.chroot-rev }}_${{ steps.config.outputs.cache_period }}
 
 
       - name: (Re)Create Chroot
@@ -224,7 +231,6 @@ jobs:
             mount --rbind /dev/  $CHR_DIR/dev  ;
           "
 
-
       - name: Chroot - Build Libass
         run: |
           sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash -c '
@@ -237,7 +243,6 @@ jobs:
             su -c '\''/bin/sh -c "cd ~/workarea; dash ./test-libass.sh"'\'' --login artci
           '
 
-
       - name: Umount Chroot
         run: |
           sudo sh -c '
@@ -249,6 +254,7 @@ jobs:
 
 
       - name: Save Chroot to Cache
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           # Clean chroot
           sudo rm -fr "$CHR_DIR/home/artci/workarea"
@@ -257,5 +263,3 @@ jobs:
           luser="$(whoami)"
           sudo tar --zstd -cf /var/chroot/imgs/"$CHR_DIR".tar.zstd "$CHR_DIR"
           sudo chown $luser:$luser /var/chroot/imgs/"$CHR_DIR".tar.zstd
-          #sudo rm -rf "$CHR_DIR"
-          #sudo du -sh "$CHR_DIR" /var/chroot-imgs/"$CHR_DIR".tar.zstd
