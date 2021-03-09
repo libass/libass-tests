@@ -7,6 +7,16 @@ on:
     - cron: '22 * * * *'
 #    - cron: '22 4 * * *'
   workflow_dispatch:
+    # Even with defaults, jobs not started via dispatch will only have blank inputs
+    inputs:
+      libass_repo:
+        description: 'An instance of a libass git repo; defaults to upstream'
+        required: false
+        default: 'https://github.com/libass/libass.git'
+      libass_ref:
+        description: 'Git ref of libass repo to run tests on; defaults to newest commit on default branch'
+        required: false
+        default: ''
 
 jobs:
   ART:
@@ -185,13 +195,26 @@ jobs:
             printf "Kernel-Arch:  %s\\n" "$(uname -m)"
             printf "Debian Ver.:  %s\\n" "$(cat /etc/debian_version)"
             printf "Sanity-Check: %s\\n" "$SANITY"
+            echo ""
           ' > env.sh
+
+          if [ -z "${{ github.event.inputs.libass_repo }}" ] ; then
+            LIBASS_REPO="https://github.com/libass/libass.git"
+          else
+            LIBASS_REPO="${{ github.event.inputs.libass_repo }}"
+          fi
 
           # Build libass
           echo '#!/bin/sh
             . ./env.sh
-            git clone --depth=2 https://github.com/libass/libass.git libass
+            echo "Cloning Repo: '"$LIBASS_REPO"'"
+            git clone --depth=1 "'"$LIBASS_REPO"'" libass
             cd libass
+            if [ ! -z "'"${{ github.event.inputs.libass_ref }}"'" ] ; then
+              echo "Checking out non-default commit..."
+              git fetch --depth=1 origin '"${{ github.event.inputs.libass_ref }}"':artci_laref
+              git checkout --force artci_laref
+            fi
             echo "Testing libass commit:"
             git log -1 --format=%H
             echo ""
