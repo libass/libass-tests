@@ -40,6 +40,10 @@ jobs:
             suite: sid
             port: yes
             chroot-rev: 8
+          - arch: ppc64
+            suite: sid
+            port: yes
+            chroot-rev: 8
           # Enable sanitisers for native build
           - arch: amd64
             sanity: sane?
@@ -129,6 +133,7 @@ jobs:
           # For simplicity, pretend every arch is foreign
           sudo debootstrap --foreign --arch=${{ matrix.arch }} \
                            --variant=minbase  \
+                           --include=debian-ports-archive-keyring \
                            --keyring="$ckeyr" \
                            ${{ matrix.suite }} "$CHR_DIR" "$crepo"
 
@@ -149,8 +154,6 @@ jobs:
           sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash -c '
             export DEBIAN_FRONTEND=noninteractive
             set -e
-            apt-get install debian-ports-archive-keyring
-            apt-get update && apt-get -y dist-upgrade
 
             apt-get install -y --no-install-recommends --no-install-suggests \
               git ca-certificates \
