@@ -4,13 +4,12 @@ on:
   push:
     branches: [master, ci]
   schedule:
-    - cron: '22 * * * *'
-#    - cron: '22 4 * * *'
+    - cron: '22 */8 * * *'
   workflow_dispatch:
     # Even with defaults, jobs not started via dispatch will only have blank inputs
     inputs:
       libass_repo:
-        description: 'An instance of a libass git repo; defaults to upstream'
+        description: 'An instance of a libass git repo'
         required: false
         default: 'https://github.com/libass/libass.git'
       libass_ref:
@@ -22,10 +21,13 @@ jobs:
   ART:
     runs-on: ubuntu-20.04
     # Run on each arch we support ASM on and furthemore
-    # one additional little and big endian arch each
+    # some additional little and big endian archs
+    # ASM:    amd64, x32, i386
+    # Big:    s390x
+    # Little: arm64, riscv64, mips64el
     strategy:
       matrix:
-        arch: [amd64, i386, ppc64el, s390x, mips64el]
+        arch: [amd64, i386, s390x, arm64, mips64el]
         suite: [buster]
         chroot-rev: [8]
         confopts: [""]
@@ -37,10 +39,6 @@ jobs:
             port: yes
             chroot-rev: 8
           - arch: riscv64
-            suite: sid
-            port: yes
-            chroot-rev: 8
-          - arch: ppc64
             suite: sid
             port: yes
             chroot-rev: 8
