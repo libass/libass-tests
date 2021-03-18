@@ -160,6 +160,7 @@ jobs:
           sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash /debootstrap/debootstrap --second-stage
           sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash -c '
             export DEBIAN_FRONTEND=noninteractive
+            export LC_ALL=C.UTF-8
             set -e
 
             apt-get install -y --no-install-recommends --no-install-suggests \
@@ -184,7 +185,8 @@ jobs:
           fi
           sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash -c '
             export DEBIAN_FRONTEND=noninteractive
-            apt-get update && apt-get -y dist-upgrade
+            export LC_ALL=C.UTF-8
+            apt-get update && apt-get -y upgrade --with-new-pkgs
           '
 
 
