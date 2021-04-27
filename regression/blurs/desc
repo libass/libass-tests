@@ -1,0 +1,3 @@
+Clean blur and be tests.
+The animation values, duration and sampling rate of the blur test
+are tuned to trigger all internal blur paths.

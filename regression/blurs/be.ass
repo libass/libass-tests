@@ -1,0 +1,15 @@
+﻿[Script Info]
+PlayResX: 800
+PlayResY: 600
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Aileron,100,&H00000000,&H00000000,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,10,10,10,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:01.00,Default,,0,0,0,,{\be1}.      {\be2}.      {\be3}.      {\be4}.\N\N{\be1}+      {\be2}+      {\be3}+      {\be4}+\N\N{\be1}¶      {\be2}¶      {\be3}¶      {\be4}¶
+Dialogue: 0,0:00:01.00,0:00:02.00,Default,,0,0,0,,{\be5}.      {\be6}.      {\be7}.      {\be8}.\N\N{\be5}+      {\be6}+      {\be7}+      {\be8}+\N\N{\be5}¶      {\be6}¶      {\be7}¶      {\be8}¶
+Dialogue: 0,0:00:02.00,0:00:03.00,Default,,0,0,0,,{\be9}.      {\be10}.      {\be11}.      {\be12}.\N\N{\be9}+      {\be10}+      {\be11}+      {\be12}+\N\N{\be9}¶      {\be10}¶      {\be11}¶      {\be12}¶
+Dialogue: 0,0:00:03.00,0:00:04.00,Default,,0,0,0,,{\be13}.      {\be14}.      {\be15}.      {\be16}.\N\N{\be13}+      {\be14}+      {\be15}+      {\be16}+\N\N{\be13}¶      {\be14}¶      {\be15}¶      {\be16}¶
