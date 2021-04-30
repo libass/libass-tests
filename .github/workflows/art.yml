@@ -58,6 +58,7 @@ jobs:
     steps:
       - name: Prepare System
         run: |
+          sudo apt-get update
           sudo apt-get install -y \
                 debian-keyring debian-archive-keyring debian-ports-archive-keyring \
                 debootstrap qemu-user-static zstd
@@ -162,14 +163,6 @@ jobs:
             export DEBIAN_FRONTEND=noninteractive
             export LC_ALL=C.UTF-8
             set -e
-
-            # Temporary workaround for (in sid) broken git->git-man dependency chain
-            if [ "x${{ matrix.arch }}" = "xriscv64" ] ; then
-              echo "deb '"$crepo"' experimental main" >> /etc/apt/sources.list
-              apt-get update
-              apt-get install -y --no-install-recommends --no-install-suggests \
-                -t experimental git || :
-            fi
 
             apt-get install -y --no-install-recommends --no-install-suggests \
               git ca-certificates \
