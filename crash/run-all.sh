@@ -5,10 +5,10 @@
 
 assertUsage "profile" "$@"
 
-prfDir="$(getDir $1)"
+prfExe="$1"
 tstDir="$(getDir $2)"
 
-assertExe "$prfDir/profile"
+assertExe "$prfExe"
 
 #Active test files must not be dotfiles and end with .ass
 #Also the filename must end with
@@ -49,7 +49,7 @@ find "$tstDir" -maxdepth 1 -type f -name "*.ass" ! -name ".*" -print0 \
 
 		#Would be nice if profile had a -q / --quiet option
 		# to not spam all styles etc, but keep fribidi version info etc
-		"$2"profile "$1" "$t_s" "$fps" "$t_e" 1>/dev/null
+		"$2" "$1" "$t_s" "$fps" "$t_e" 1>/dev/null
 		ret="$?"
 		if [ "$ret" -eq "0" ] ; then
 			echo "OK."
@@ -58,7 +58,7 @@ find "$tstDir" -maxdepth 1 -type f -name "*.ass" ! -name ".*" -print0 \
 		fi
 		echo ""
 		exit "$ret"
-	' _ "{}" "$prfDir"
+	' _ "{}" "$prfExe"
 es="$?"
 
 xargsRetCode2Msg "$es"

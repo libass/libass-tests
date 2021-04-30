@@ -5,10 +5,10 @@
 
 assertUsage "compare" "$@"
 
-cmpDir="$(getDir $1)"
+cmpExe="$1"
 tstDir="$(getDir $2)"
 
-assertExe "$cmpDir/compare"
+assertExe "$cmpExe"
 
 # The actual tests
 find "$tstDir" -maxdepth 1 -type d ! -name ".*" -print0 \
@@ -19,14 +19,14 @@ find "$tstDir" -maxdepth 1 -type d ! -name ".*" -print0 \
 		fi
 		echo "[TEST]: $1"
 		if [ -f "$1"/scale ] ; then
-			"$2"compare "$1" -s "$(cat "$1"/scale)"
+			"$2" "$1" -s "$(cat "$1"/scale)"
 		else
-			"$2"compare "$1"
+			"$2" "$1"
 		fi
 		ret="$?"
 		echo ""
 		exit "$ret"
-	' _ "{}" "$cmpDir"
+	' _ "{}" "$cmpExe"
 es="$?"
 
 xargsRetCode2Msg "$es"

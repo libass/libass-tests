@@ -262,7 +262,7 @@ jobs:
             echo "Using testsuite from commit:"
             git log -1 --format=%H
             echo ""
-            ./run.sh ../libass/compare ../libass/profile
+            ./run.sh ../libass/compare/compare ../libass/profile/profile
           ' > test-libass.sh
 
 

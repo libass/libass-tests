@@ -42,7 +42,7 @@ assertExe() {
 assertUsage() {
 	if [ "$#" -gt 3 ] ; then
 		echo "Too many arguments !"
-		echo 'run-all.sh [<dir of $1 executable>] [<root dir of tests>]'
+		echo 'run-all.sh [<$1 executable>] [<root dir of tests>]'
 		exit 1
 	fi
 }
