@@ -301,8 +301,8 @@ jobs:
           sudo chown $luser:$luser /var/chroot/imgs/"$CHR_DIR".tar.zstd
 
 
-  ART-Microsoft:
-    runs-on: windows-2019
+  ART-OS:
+    runs-on: ${{ matrix.os }}
     # Emulate names of multi-CPU-arch runs so our bot can pick it up
     name: ${{ matrix.name }}
     strategy:
@@ -310,24 +310,41 @@ jobs:
       matrix:
         include:
           - name: 'ART (microsoft64, windows-server-2019)'
+            os: windows-2019
+            shell: 'msys2 {0}'
             msystem: MINGW64
             arch: x86_64
             cflags: ''
           - name: 'ART (microsoft32, windows-server-2019)'
+            os: windows-2019
+            shell: 'msys2 {0}'
             msystem: MINGW32
             arch: i686
             cflags: '-msse -msse2 -mfpmath=sse'
+          - name: 'ART (applex86, macos-10.15)'
+            os: macos-10.15
+            shell: bash
     defaults:
       run:
-        shell: msys2 {0}
+        shell: ${{ matrix.shell }}
     steps:
+      - name: Install Dependencies
+        if: matrix.os == 'macos-10.15'
+        run: |
+          # fontconfig, freetype, autoconf and libtool are preinstalled
+          # and `brew install` fails if a non-uptodate version is already installed
+          #brew upgrade fontconfig freetype autoconf libtool
+          brew install automake fribidi harfbuzz nasm
+
       - name: Setup MSys2
         uses: msys2/setup-msys2@v2
+        if: matrix.os == 'windows-2019'
         with:
           msystem: ${{ matrix.msystem }}
           update: false
 
       - name: Install Precompiled Dependencies
+        if: matrix.os == 'windows-2019'
         run: |
           pre="mingw-w64-${{ matrix.arch }}"
           pacman --noconfirm -S \
