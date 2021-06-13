@@ -123,6 +123,19 @@ jobs:
           path: /var/chroot/imgs
           key: ${{ matrix.suite }}-${{ matrix.arch }}-${{ matrix.chroot-rev }}_${{ steps.config.outputs.cache_period }}
 
+      - name: Load and Update Cached Chroot
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          sudo tar --zstd -xf /var/chroot/imgs/"$CHR_DIR".tar.zstd
+          if [ ! -z "${IPRE}" ] ; then
+            echo "Update qemu-binary '${IPRE}' ..."
+            sudo cp "${IPRE}" "${CHR_DIR}${IPRE}"
+          fi
+          sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash -c '
+            export DEBIAN_FRONTEND=noninteractive
+            export LC_ALL=C.UTF-8
+            apt-get update && apt-get -y upgrade --with-new-pkgs
+          '
 
       - name: (Re)Create Chroot
         if: steps.cache.outputs.cache-hit != 'true'
@@ -177,19 +190,16 @@ jobs:
             runuser -u artci mkdir /home/artci/workarea-skel
           '
 
-      - name: Load and Update Cached Chroot
-        if: steps.cache.outputs.cache-hit == 'true'
+      - name: Save Chroot Base to Cache
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          sudo tar --zstd -xf /var/chroot/imgs/"$CHR_DIR".tar.zstd
-          if [ ! -z "${IPRE}" ] ; then
-            echo "Update qemu-binary '${IPRE}' ..."
-            sudo cp "${IPRE}" "${CHR_DIR}${IPRE}"
-          fi
-          sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash -c '
-            export DEBIAN_FRONTEND=noninteractive
-            export LC_ALL=C.UTF-8
-            apt-get update && apt-get -y upgrade --with-new-pkgs
-          '
+          # Clean chroot
+          sudo rm -fr "$CHR_DIR/home/artci/workarea"
+          sudo cp -a "$CHR_DIR/home/artci/workarea-skel" "$CHR_DIR/home/artci/workarea"
+          # Compress and store chroot in cache dir
+          luser="$(whoami)"
+          sudo tar --zstd -cf /var/chroot/imgs/"$CHR_DIR".tar.zstd "$CHR_DIR"
+          sudo chown $luser:$luser /var/chroot/imgs/"$CHR_DIR".tar.zstd
 
 
       - name: Prepare Chroot Jobs
@@ -289,17 +299,6 @@ jobs:
             done
           '
 
-
-      - name: Save Chroot to Cache
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          # Clean chroot
-          sudo rm -fr "$CHR_DIR/home/artci/workarea"
-          sudo cp -a "$CHR_DIR/home/artci/workarea-skel" "$CHR_DIR/home/artci/workarea"
-          # Compress and store chroot in cache dir
-          luser="$(whoami)"
-          sudo tar --zstd -cf /var/chroot/imgs/"$CHR_DIR".tar.zstd "$CHR_DIR"
-          sudo chown $luser:$luser /var/chroot/imgs/"$CHR_DIR".tar.zstd
 
 
   ART-OS:
