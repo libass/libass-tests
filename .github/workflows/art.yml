@@ -171,7 +171,8 @@ jobs:
               libfreetype6-dev libfribidi-dev libfontconfig-dev libharfbuzz-dev libpng-dev \
               '"$add_pkgs"'
 
-            useradd -m -d /home/artci -p notrelevant -s /bin/dash -U artci
+            groupadd -g 1000 artci
+            useradd -m -d /home/artci -p notrelevant -s /bin/dash -g artci -u 1000 artci
             runuser -u artci mkdir /home/artci/workarea
             runuser -u artci mkdir /home/artci/workarea-skel
           '
