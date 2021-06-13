@@ -30,7 +30,7 @@ jobs:
       matrix:
         arch: [amd64, s390x, arm64, mips64el]
         suite: [buster]
-        chroot-rev: [8]
+        chroot-rev: [9]
         confopts: [""]
         cflags: [""]
         include:
@@ -41,16 +41,16 @@ jobs:
           - arch: i386
             suite: buster
             cflags: '-msse -msse2 -mfpmath=sse'
-            chroot-rev: 8
+            chroot-rev: 9
           # Yes, GHA's kernel supports x32 syscalls
           - arch: x32
             suite: sid
             port: yes
-            chroot-rev: 8
+            chroot-rev: 9
           - arch: riscv64
             suite: sid
             port: yes
-            chroot-rev: 8
+            chroot-rev: 9
           # Enable sanitisers for native build
           - arch: amd64
             sanity: sane?
@@ -135,6 +135,7 @@ jobs:
             export DEBIAN_FRONTEND=noninteractive
             export LC_ALL=C.UTF-8
             apt-get update && apt-get -y upgrade --with-new-pkgs
+            cp -a /home/artci/workarea-skel /home/artci/workarea
           '
 
       - name: (Re)Create Chroot
@@ -186,20 +187,18 @@ jobs:
 
             groupadd -g 1000 artci
             useradd -m -d /home/artci -p notrelevant -s /bin/dash -g artci -u 1000 artci
-            runuser -u artci mkdir /home/artci/workarea
             runuser -u artci mkdir /home/artci/workarea-skel
           '
 
       - name: Save Chroot Base to Cache
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          # Clean chroot
-          sudo rm -fr "$CHR_DIR/home/artci/workarea"
-          sudo cp -a "$CHR_DIR/home/artci/workarea-skel" "$CHR_DIR/home/artci/workarea"
           # Compress and store chroot in cache dir
           luser="$(whoami)"
           sudo tar --zstd -cf /var/chroot/imgs/"$CHR_DIR".tar.zstd "$CHR_DIR"
           sudo chown $luser:$luser /var/chroot/imgs/"$CHR_DIR".tar.zstd
+          # Initialise workarea for further use
+          sudo cp -a "$CHR_DIR/home/artci/workarea-skel" "$CHR_DIR/home/artci/workarea"
 
 
       - name: Prepare Chroot Jobs
