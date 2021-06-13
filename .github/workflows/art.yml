@@ -61,7 +61,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
                 debian-keyring debian-archive-keyring debian-ports-archive-keyring \
-                debootstrap qemu-user-static zstd
+                debootstrap qemu-user-static zstd \
+                git ca-certificates
           sudo mkdir -p /var/chroot/imgs
           sudo chmod -R 777 /var/chroot
           luser="$(whoami)"
@@ -179,7 +180,6 @@ jobs:
             set -e
 
             apt-get install -y --no-install-recommends --no-install-suggests \
-              git ca-certificates \
               autoconf automake make libtool pkg-config \
               gcc \
               libfreetype6-dev libfribidi-dev libfontconfig-dev libharfbuzz-dev libpng-dev \
@@ -201,6 +201,50 @@ jobs:
           sudo cp -a "$CHR_DIR/home/artci/workarea-skel" "$CHR_DIR/home/artci/workarea"
 
 
+      - name: Checkout Git Repos
+        run: |
+          if [ -z "${{ github.event.inputs.libass_repo }}" ] ; then
+            LIBASS_REPO="https://github.com/libass/libass.git"
+          else
+            LIBASS_REPO="${{ github.event.inputs.libass_repo }}"
+          fi
+
+          sudo sh -c '
+            set -e
+            cd "'"$CHR_DIR"'"/home/artci/workarea
+
+            # libass
+            echo "Cloning Libass Repo: '"$LIBASS_REPO"'"
+            git clone --depth=1 "'"$LIBASS_REPO"'" libass
+            cd libass
+            if [ ! -z "'"${{ github.event.inputs.libass_ref }}"'" ] ; then
+              echo "Checking out non-default commit..."
+              git fetch --depth=1 origin '"${{ github.event.inputs.libass_ref }}"':artci_laref
+              git checkout --force artci_laref
+            fi
+            echo "Testing libass commit:"
+            git log -1 --format=%H
+            cd ..
+            echo ""
+
+            # regression tests
+            git clone --depth=1 https://github.com/${{ github.repository }}.git libass-tests
+            cd libass-tests
+            if [ x"${{ github.ref }}" != x ] ; then
+              git fetch --depth=1 origin ${{ github.ref }}:artci_laref
+              git checkout --force artci_laref
+            else
+              echo "Could not determine ref! Fallback to current master."
+            fi
+            echo "Using testsuite from commit:"
+            git log -1 --format=%H
+            cd ..
+            echo ""
+
+            # Fix ownership
+            sudo chown -R 1000:1000 *
+          '
+
       - name: Prepare Chroot Jobs
         run: |
           cd "$CHR_DIR"/home/artci/workarea
@@ -221,26 +265,10 @@ jobs:
             echo ""
           ' > env.sh
 
-          if [ -z "${{ github.event.inputs.libass_repo }}" ] ; then
-            LIBASS_REPO="https://github.com/libass/libass.git"
-          else
-            LIBASS_REPO="${{ github.event.inputs.libass_repo }}"
-          fi
-
           # Build libass
           echo '#!/bin/sh
             . ./env.sh
-            echo "Cloning Repo: '"$LIBASS_REPO"'"
-            git clone --depth=1 "'"$LIBASS_REPO"'" libass
             cd libass
-            if [ ! -z "'"${{ github.event.inputs.libass_ref }}"'" ] ; then
-              echo "Checking out non-default commit..."
-              git fetch --depth=1 origin '"${{ github.event.inputs.libass_ref }}"':artci_laref
-              git checkout --force artci_laref
-            fi
-            echo "Testing libass commit:"
-            git log -1 --format=%H
-            echo ""
             ./autogen.sh
             CFLAGS="$CFLAGS $LIBASS_CFLAGS" ./configure "$LIBASS_CONF" --enable-profile --enable-compare
             if [ -z "$SANITY" ] ; then
@@ -253,18 +281,7 @@ jobs:
           # Test libass
           echo '#!/bin/sh
             . ./env.sh
-            # Checkout via action did not work well with chroot
-            git clone --depth=1 https://github.com/${{ github.repository }}.git libass-tests
             cd libass-tests
-            if [ x"${{ github.ref }}" != x ] ; then
-              git fetch --depth=1 origin ${{ github.ref }}:artci
-              git checkout --force artci
-            else
-              echo "Could not determine Ref! Fallback to current master."
-            fi
-            echo "Using testsuite from commit:"
-            git log -1 --format=%H
-            echo ""
             ./run.sh ../libass/compare/compare ../libass/profile/profile
           ' > test-libass.sh
 
