@@ -104,8 +104,16 @@ jobs:
               ;;
           esac
 
-          cache_period="$(printf '%d/44\n' "$(date +%j)" | bc)"
-          cache_period="$(printf "%d-%02d" "$(date +%Y)" "$cache_period")"
+          # Regenerate chroots regularly
+          # Often a few GHA jobs suffered connection timeouts on regeneration,
+          # but work just fine on manual rerun. Offset regeneration time
+          # for some chroots in hopes to avoid this.
+          if [ "x${{ matrix.port }}" = xyes ] ; then
+            tmp="$(( $(date +%j) + 1 ))"
+          else
+            tmp="$(date +%j)"
+          fi
+          cache_period="$(printf "%d-%02d" "$(date +%Y)" "$(( tmp / 44 ))")"
           echo "::set-output name=cache_period::${cache_period}"
 
           echo "QEMU_ARCH=${qarch}"   >> $GITHUB_ENV
