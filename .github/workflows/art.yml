@@ -4,7 +4,7 @@ on:
   push:
     branches: [master, ci]
   schedule:
-    - cron: '22 */8 * * *'
+    - cron: '22 2 * * *'
   workflow_dispatch:
     # Even with defaults, jobs not started via dispatch will only have blank inputs
     inputs:
