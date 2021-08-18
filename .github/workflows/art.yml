@@ -46,11 +46,11 @@ jobs:
           - arch: x32
             suite: sid
             port: yes
-            chroot-rev: 9
+            chroot-rev: 10
           - arch: riscv64
             suite: sid
             port: yes
-            chroot-rev: 9
+            chroot-rev: 10
           # Enable sanitisers for native build
           - arch: amd64
             sanity: sane?
@@ -194,7 +194,7 @@ jobs:
               '"$add_pkgs"'
 
             groupadd -g 1000 artci
-            useradd -m -d /home/artci -p notrelevant -s /bin/dash -g artci -u 1000 artci
+            useradd -m -d /home/artci -s /bin/dash -g artci -u 1000 artci
             runuser -u artci mkdir /home/artci/workarea-skel
           '
 
