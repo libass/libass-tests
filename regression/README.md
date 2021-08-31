@@ -1,20 +1,22 @@
-J## Some Regression Tests for Libass
+## Some Regression Tests for Libass
 
 This directory contains regression test.
-Regression tests render the output via `compare` and report deviation from a
-known good output. This way regressions and other unintended side-effects can
-hopefully be discovered early before patches get merged.
+Regression tests check the current output via `compare` against a known good
+sample reporting deviations. This way regressions and other unintended changes
+can hopefully be discovered early before patches get merged.
 
-Tests are grouped into direct child directory of the current directory.
-More information regaridng the test directory-structure can be found below.
+The tests are grouped, with each group being located in a direct
+child-directory of this one. The structure of these child-directories
+is described further below.
 
-### Run test
-Run all tests with
+### Run tests
+Run all tests by passing in the path to the compare executable
+and the regression-test root dir *(defaults to `.` when ommited)*.
 ```
- ./run-all.sh [<dir of compare executable>] [<root dir of tests>]
+ ./run-all.sh <dir of compare executable> [<root dir of tests>]
 ```
 
-Run a single test in `tdir` with:
+Run a single test group located in `tdir` with:
 ```
  if [ -f tdir/scale ] ; then
     compare tdir -s "$(cat tdir/scale)"
@@ -27,8 +29,8 @@ Run a single test in `tdir` with:
 Each non-dot folder contains one group of active tests.
 `.fonts` contains all font files.
 
-Inside a test-dir Multiple ass-files and png-files may be present according to
-`compare`'s format requirements.
+Inside a test-dir multiple ASS and PNG files may be present
+conforming to `compare`'s format requirements.
 
 Furthermore a test dir may contain:
 
@@ -38,7 +40,7 @@ Furthermore a test dir may contain:
  - Symlinks to font files for `compare` to use. Read below.
 
 ### Fonts
-To take the system font wildcard out of the equation, `compare` disables system
-font provider and only uses font files from each tests directory. To avoid
-unnecessary duplicates all font files are inside the `regression/.font` dir;
-required fonts are symlinked into the test dir.
+To get a consistent test environment, `compare` disables system font providers
+and only uses font files from each test group's directory. To not duplicate all
+font files, all font files are pplaced into the common `.fonts` directory with
+required fonts being symlinked into the individual test group dirs.

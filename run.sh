@@ -10,7 +10,7 @@ if [ "$#" -ne 2 ] ; then
 fi
 
 if [ ! -e "$1" ] || [ ! -e "$2" ] ; then
-	echo "Compare or Profile directory does not exist !" 1>&2
+	echo "Executeable of compare or profile does not exist!" 1>&2
 	exit 1
 fi
 
@@ -27,7 +27,7 @@ echo "==========="
 (cd crash; ./run-all.sh "$prfExe")
 
 if [ "$?" -ne 0 ] ; then
-	echo "Crash tests failed !" 1>&2
+	echo "Crash tests failed!" 1>&2
 	exit 2
 else
 	echo "Passed crash tests."
@@ -41,7 +41,7 @@ echo "================"
 (cd regression; ./run-all.sh "$cmpExe")
 
 if [ "$?" -ne 0 ] ; then
-	echo "Regression tests failed !" 1>&2
+	echo "Regression tests failed!" 1>&2
 	exit 3
 else
 	echo "Passed regression tests."

@@ -1,9 +1,5 @@
 # Libass Tests
 
-A first attempt at a libass test suite.
-Intented to make it easier to both discover flaws in the code of patches and
-unintended side-effects/regression early before they hit master.
-
 Testing is best done with a libass build having ASAN and UBSAN enabled.
 E.g.:
 ```sh
@@ -16,8 +12,15 @@ make clean \
 There are two types of tests:
 
 ## Regression Tests
-Those tests compare the rasterized output with a known-good sample, reporting
-deviations.
+Those tests compare the rasterized output with a known good sample,
+reporting deviations. Does not use system font providers.
+
+Reference samples are produced on amd64 using SSE-math
+(`float`: 32bit, `double`: 64bit), if run on a platform
+with different floating point precision, some test will
+show slight deviations, but should notrmally still pass
+with `GOOD` anyway. If the floating point precision matches
+all tests should pass as `SAME` without any deviations.
 
 ## Crash Tests
 Intended to feed libass various scripts with all kind of different inputs who
@@ -29,15 +32,17 @@ Those tests should try to cover many codepaths and unusual combinations, that
 are easily forgotten to take into account, although they don't need to cover
 insane inputs as fuzzing might produce.
 
+Does use the system font provider.
+
 ## Run all tests
 ```sh
 PARALLEL=1 ./run.sh <libass-dir>/compare <libass-dir>/profile
 ```
 
-How many tests are run simultaneously can be controlled with the `PARALLEL`
-environment variable, if not set it will defaul to `1`(sequential).
+How many tests are run simultaneously is controlled via the `PARALLEL`
+environment variable; if not set it will defaul to `1`(sequential).
 Running test in parallel decreases test time, but mangles the output. If any
-tests fails, rerunning in sequential mode is advised to get a proper view on
+tests fails, rerunning in sequential mode is advised to get a proper log for
 what's failing.
 
 ## Requirements
@@ -45,15 +50,14 @@ The shell scripts assume the presence of the non-POSIX
 `xargs -0` and `find -print0` extensions. Otherwise pure POSIX.
 
 ## Todo
-Currently there are not many tests and those that already are there are either
-too verbose/repetitve or not broad enough.
+ - Crash test would ideally use a dedicated test/fuzzer consumer
+   like eg [this](https://github.com/TheOneric/libass/commit/fuzz),
+   instead of relying on profile, which processes each events more
+   often than needed for this purpose and we need to determine the
+   start and endtime of samples
 
-Also crash test would profit from a dedicated test/fuzz consumer as eg
-[this](https://github.com/TheOneric/libass/commit/fuzz)
-added, instead of relying on profile, which processes events more often than
-needed for this kind of test.
-
-Ideally test-suite should use a rsync-server or something similar to
-store the image samples outside of git's history, to keep the repo small.
-*(On the other hand, we'll rarely need to checkout the full history.)*
-`git lfs` is unsuitable as it's not available for all tested arches.
+ - Ideally the binary samples would not be stored in the git repo
+   but fetch from rsync or so *(Git LFS is not really suitable
+   as it's availability across different platforms isn't great)*
+   But on the other hand, we rarely need to update the samples
+   or fetch the whole history anyway.
