@@ -47,7 +47,8 @@ what's failing.
 
 ## Requirements
 The shell scripts assume the presence of the non-POSIX
-`xargs -0` and `find -print0` extensions. Otherwise pure POSIX.
+`xargs -0` and `find -print0 -maxdepth -mindepth` extensions.
+Otherwise pure POSIX.
 
 ## Todo
  - Crash test would ideally use a dedicated test/fuzzer consumer
