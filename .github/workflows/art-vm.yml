@@ -1,0 +1,186 @@
+name: Automatic Regression Tests in VMs
+
+on:
+  push:
+    branches: [master, ci]
+  workflow_dispatch:
+    # Even with defaults, jobs not started via dispatch will only have blank inputs
+    inputs:
+      libass_repo:
+        description: 'An instance of a libass git repo'
+        required: false
+        default: 'https://github.com/libass/libass.git'
+      libass_ref:
+        description: 'Git ref of libass repo to run tests on; defaults to newest commit on default branch'
+        required: false
+        default: ''
+
+jobs:
+  ART-VM:
+    # Currently only MacOS 10.15 runners can do virtualisation
+    runs-on: macos-10.15
+    # Bot-friendly names
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: 'ART (netbsd64, NetBSD-9, amd64)'
+            vbox: NetBSD/NetBSD-9.1
+            confflags: '--disable-asm'
+          - name: 'ART (illumos32, OpenIndiana, i686)'
+            vbox: openindiana/hipster
+            confenv: 'CC="gcc -m32 -msse -msse2 -mfpmath=sse" ASFLAGS="-DPIC=1"'
+            confflags: '--host=i686-pc-solaris2.11'
+    env:
+      VAGRANT_DISABLE_VBOXSYMLINKCREATE: 1
+    defaults:
+      run:
+        shell: 'bash /tmp/artci/vm-shell {0}'
+
+    steps:
+      - name: Prepare VM-Shell
+        shell: bash
+        run: |
+          mkdir -p /tmp/artci
+          echo '
+          #!/bin/sh
+          if [ "$#" -ne 1 ] ; then
+            echo "Usage: $0 <script-file>" 1>&2
+            exit 1
+          fi
+          set -ex
+          vagrant upload "$1" /tmp/step.sh
+          vagrant ssh -- "sh -e /tmp/step.sh"
+          ' > /tmp/artci/vm-shell
+          sudo chmod a+x /tmp/artci/vm-shell
+
+      - name: Fetch and Start VM-Image
+        shell: bash
+        run: |
+          vagrant init "${{ matrix.vbox }}"
+          (
+            # Sometimes this fails with HTTP erorr 429 (too many requests)
+            # The exit status is not a godd indicator, so use the status output instead
+            flag=1
+            i=0
+            set +e
+            while [ "$flag" -ne 0 ] ; do
+              echo "Attempt $(( i + 1 )) to download vagrantbox; waiting $(( i * 61 ))s before download."
+              sleep "$(( i * 61 ))"s
+              vagrant up --provider virtualbox 2>&1
+              vagrant status --machine-readable | grep state,running
+              flag="$?"
+              echo "Flag: $flag"
+              i="$(( i + 1 ))"
+              if [ "$i" -gt 5 ] ; then
+                exit "$flag"
+              fi
+              echo ""
+            done \
+              | grep --line-buffered -vE 'Progress:'
+            set -e
+          )
+          vagrant ssh -c 'uname -a ; whoami'
+
+      # The OI image is too old to be able to install dependencies without an upgrade first
+      # and while this isn't the case with the NetBSD image (yet), the packages aren't recent either
+      - name: Upgrade System
+        run: |
+          case "${{ matrix.vbox }}" in
+            openindiana/*)
+              pfexec pkg refresh
+              pfexec pkg update -r --no-backup-be
+              ;;
+            */NetBSD*)
+              # Remove preinstalled ruby packages to speed up upgrade
+              sudo pkgin -y remove $(pkgin list | awk '/^ruby/ {print $1}') \
+                || cat /var/db/pkgin/pkg_install-err.log
+              sudo pkgin -y autoremove
+              sudo pkgin update
+              sudo pkgin -y full-upgrade
+              ;;
+          esac
+
+      # On OpenIndiana upgrades of base components require a restart, since
+      # they'll get installed into a new boot environment not the current one
+      - name: Reboot VM
+        if: startsWith(matrix.vbox, 'openindiana')
+        shell: bash
+        run: |
+          vagrant reload
+
+      - name: Install Packages
+        run: |
+          case "${{ matrix.vbox }}" in
+            openindiana/*)
+              pfexec pkg install --no-backup-be \
+                  crypto/ca-certificates \
+                  developer/versioning/git \
+                  developer/gcc-10 \
+                  developer/assembler/nasm \
+                  developer/build/autoconf \
+                  developer/build/automake \
+                  developer/build/libtool \
+                  developer/build/pkg-config \
+                  system/library/freetype-2 \
+                  library/fribidi \
+                  library/c++/harfbuzz \
+                  system/library/fontconfig \
+                  image/library/libpng
+              ;;
+            */NetBSD*)
+              # We'll use the base system's version of gcc
+              sudo pkgin -y install \
+                  mozilla-rootcerts-openssl git nasm \
+                  autoconf automake libtool-base pkg-config \
+                  freetype fribidi harfbuzz fontconfig png
+              ;;
+          esac
+
+      - name: Checkout Git Repos
+        run: |
+          if [ -z "${{ github.event.inputs.libass_repo }}" ] ; then
+            LIBASS_REPO="https://github.com/libass/libass.git"
+          else
+            LIBASS_REPO="${{ github.event.inputs.libass_repo }}"
+          fi
+
+          # libass
+          echo "Cloning Libass Repo: $LIBASS_REPO"
+          git clone --depth=1 "$LIBASS_REPO" libass
+          cd libass
+          if [ ! -z "${{ github.event.inputs.libass_ref }}" ] ; then
+            echo "Checking out non-default commit..."
+            git fetch --depth=1 origin "${{ github.event.inputs.libass_ref }}":artci_laref
+            git checkout --force artci_laref
+          fi
+          echo "Testing libass commit:"
+          git log -1 --format=%H
+
+          cd ..
+          echo ""
+
+          # regression tests
+          git clone --depth=1 'https://github.com/${{ github.repository }}.git' libass-tests
+          cd libass-tests
+          if [ x"${{ github.ref }}" != x ] ; then
+            git fetch --depth=1 origin ${{ github.ref }}:artci_laref
+            git checkout --force artci_laref
+          else
+            echo "Could not determine ref! Fallback to current master."
+          fi
+          echo "Using testsuite from commit:"
+          git log -1 --format=%H
+
+      - name: Build libass
+        run: |
+          cd libass
+          ./autogen.sh
+          ${{ matrix.confenv }} ./configure ${{ matrix.confflags }} --enable-profile --enable-compare
+          make -j 2
+
+      - name: Run Regression Tests
+        run: |
+          cd libass-tests
+          ./run.sh ../libass/compare/compare ../libass/profile/profile
