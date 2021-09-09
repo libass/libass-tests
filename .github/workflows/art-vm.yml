@@ -27,10 +27,11 @@ jobs:
         include:
           - name: 'ART (netbsd64, NetBSD-9, amd64)'
             vbox: NetBSD/NetBSD-9.1
-            confflags: '--disable-asm'
+            confenv: ''
+            confflags: ''
           - name: 'ART (illumos32, OpenIndiana, i686)'
             vbox: openindiana/hipster
-            confenv: 'CC="gcc -m32 -msse -msse2 -mfpmath=sse" ASFLAGS="-DPIC=1"'
+            confenv: 'CC="gcc -m32 -msse -msse2 -mfpmath=sse"'
             confflags: '--host=i686-pc-solaris2.11'
     env:
       VAGRANT_DISABLE_VBOXSYMLINKCREATE: 1
