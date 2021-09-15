@@ -67,7 +67,7 @@ jobs:
             set +e
             while [ "$flag" -ne 0 ] ; do
               echo "Attempt $(( i + 1 )) to download vagrantbox; waiting $(( i * 61 ))s before download."
-              sleep "$(( i * 61 ))"s
+              sleep "$(( i * 61 ))"
               vagrant up --provider virtualbox 2>&1
               vagrant status --machine-readable | grep state,running
               flag="$?"
