@@ -108,10 +108,12 @@ jobs:
           # Often a few GHA jobs suffered connection timeouts on regeneration,
           # but work just fine on manual rerun. Offset regeneration time
           # for some chroots in hopes to avoid this.
+          # Note: date +%j can have leading zeros causing $(()) to interpret it as octal.
+          #       To avoid this, initially use bc to stick to decimal and remove leading zeros.
           if [ "x${{ matrix.port }}" = xyes ] ; then
-            tmp="$(( $(date +%j) + 1 ))"
+            tmp="$( echo "$(date +%j) + 1" | bc )"
           else
-            tmp="$(date +%j)"
+            tmp="$(echo "$(date +%j)" | bc )"
           fi
           cache_period="$(printf "%d-%02d" "$(date +%Y)" "$(( tmp / 44 ))")"
           echo "::set-output name=cache_period::${cache_period}"
