@@ -33,6 +33,7 @@ jobs:
             vbox: openindiana/hipster
             confenv: 'CC="gcc -m32 -msse -msse2 -mfpmath=sse"'
             confflags: '--host=i686-pc-solaris2.11'
+            art_reg_skip: 'font_nonunicode'
     env:
       VAGRANT_DISABLE_VBOXSYMLINKCREATE: 1
     defaults:
@@ -189,4 +190,5 @@ jobs:
       - name: Run Regression Tests
         run: |
           cd libass-tests
+          ART_REG_SKIP="${{ matrix.art_reg_skip }}" \
           ./run.sh ../libass/compare/compare ../libass/profile/profile

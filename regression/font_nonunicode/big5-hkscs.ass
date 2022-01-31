@@ -1,0 +1,15 @@
+[Script Info]
+Title: Big5-HKSCS encoded font: https://github.com/libass/libass/issues/531
+ScriptType:v4.00+
+Collisions:Normal
+ScaledBorderAndShadow: yes
+PlayResX:854
+PlayResY:480
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: kasi,文鼎新藝體,125,&H00FFFFFF,&HF0000000,&H00000000,&H8C000000,-1,0,0,0,100,100,0,0.00,1,0,0,8,30,15,6,1
+
+[Events]
+Format: Layer, Start, End, Style, Actor, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:01:54.41,kasi,,0000,0000,0000,,文鼎新藝體 訐解 古天
