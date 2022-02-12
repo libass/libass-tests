@@ -157,17 +157,15 @@ jobs:
 
           if [ x"${{ matrix.port }}" = xyes ] ; then
             crepo="http://ftp.ports.debian.org/debian-ports/"
-            ckeyr="/usr/share/keyrings/debian-ports-archive-keyring.gpg"
           else
             crepo="http://deb.debian.org/debian"
-            ckeyr="/usr/share/keyrings/debian-archive-keyring.gpg"
           fi
 
           # For simplicity, pretend every arch is foreign
           sudo debootstrap --foreign --arch=${{ matrix.arch }} \
                            --variant=minbase  \
                            --include=debian-ports-archive-keyring \
-                           --keyring="$ckeyr" \
+                           --no-check-gpg \
                            ${{ matrix.suite }} "$CHR_DIR" "$crepo"
 
           if [ ! -z "${IPRE}" ] ; then
