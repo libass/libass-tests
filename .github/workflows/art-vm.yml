@@ -59,7 +59,12 @@ jobs:
       - name: Fetch and Start VM-Image
         shell: bash
         run: |
-          vagrant init "${{ matrix.vbox }}"
+          echo '
+            Vagrant.configure("2") do |config|
+              config.vm.box = "'"${{ matrix.vbox }}"'"
+              config.vm.boot_timeout = 6000
+            end
+          ' > Vagrantfile
           (
             # Sometimes this fails with HTTP erorr 429 (too many requests)
             # The exit status is not a godd indicator, so use the status output instead
