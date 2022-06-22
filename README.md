@@ -4,7 +4,7 @@ Testing is best done with a libass build having ASAN and UBSAN enabled.
 E.g.:
 ```sh
 make clean \
- && make CC="gcc -fsanitize=address -fsanitize=undefined -fsanitize=float-cast-overflow -fno-sanitize-recover=all" -j6
+ && make CC="gcc -fsanitize=address -fsanitize=undefined -fsanitize=float-cast-overflow -fno-sanitize-recover=all" -j 6
 ```
 *(After the currently pending division-by-zero-bugs are fixed
 `-fsanitize=float-divide-by-zero` should be added as well)*
