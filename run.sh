@@ -1,7 +1,7 @@
 #!/bin/sh
 
 usage() {
-    echo "run.sh <compare> <profile>" 1>&2
+    echo "run.sh <compare> <fuzz>" 1>&2
 }
 
 if [ "$#" -ne 2 ] ; then
@@ -10,13 +10,13 @@ if [ "$#" -ne 2 ] ; then
 fi
 
 if [ ! -e "$1" ] || [ ! -e "$2" ] ; then
-    echo "Executeable of compare or profile does not exist!" 1>&2
+    echo "Executeable of compare or fuzz does not exist!" 1>&2
     exit 1
 fi
 
 set -e
 cmpExe="$(cd "$(dirname "$1")"; pwd)/$(basename "$1")"
-prfExe="$(cd "$(dirname "$2")"; pwd)/$(basename "$2")"
+fzzExe="$(cd "$(dirname "$2")"; pwd)/$(basename "$2")"
 set +e
 
 
@@ -24,7 +24,7 @@ cd "$(dirname "$0")"
 
 echo "Crash-Tests"
 echo "==========="
-(cd crash; ./run-all.sh "$prfExe")
+(cd crash; ./run-all.sh "$fzzExe")
 
 if [ "$?" -ne 0 ] ; then
     echo "Crash tests failed!" 1>&2
