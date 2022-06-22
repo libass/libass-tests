@@ -38,11 +38,11 @@ assertExe() {
 }
 
 # Test if run-all variant is used correctly, exit with error 1 otherwise
-# Args: <utility name> <all other args, passed by "$@"> ...
+# Args: <utility name> <all other args, passed via "$@"> ...
 assertUsage() {
     if [ "$#" -gt 3 ] ; then
         echo "Too many arguments!"
-        echo 'run-all.sh [<$1 executable>] [<root dir of tests>]'
+        echo 'run-all.sh <executable> [<root dir of tests>]'
         exit 1
     fi
 }
