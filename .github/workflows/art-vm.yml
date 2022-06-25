@@ -96,8 +96,7 @@ jobs:
         run: |
           case "${{ matrix.vbox }}" in
             openindiana/*)
-              pfexec pkg refresh
-              pfexec pkg update -r --no-backup-be
+              pfexec pkg update -r --no-backup-be || :
               ;;
             */NetBSD*)
               # Remove preinstalled ruby packages to speed up upgrade
