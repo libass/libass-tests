@@ -278,7 +278,7 @@ jobs:
             . ./env.sh
             cd libass
             ./autogen.sh
-            CFLAGS="$CFLAGS $LIBASS_CFLAGS" ./configure "$LIBASS_CONF" --enable-profile --enable-compare
+            CFLAGS="$CFLAGS $LIBASS_CFLAGS" ./configure "$LIBASS_CONF" --enable-fuzz --enable-compare
             if [ -z "$SANITY" ] ; then
               make -j 2
             else
@@ -290,7 +290,7 @@ jobs:
           echo '#!/bin/sh
             . ./env.sh
             cd libass-tests
-            ./run.sh ../libass/compare/compare ../libass/profile/profile
+            ./run.sh ../libass/compare/compare ../libass/fuzz/fuzz
           ' > test-libass.sh
 
 
@@ -403,7 +403,7 @@ jobs:
           git log -1 --format='%H'
           echo ""
           ./autogen.sh
-          CFLAGS="${{ matrix.cflags }}" ./configure --enable-profile --enable-compare
+          CFLAGS="${{ matrix.cflags }}" ./configure --enable-fuzz --enable-compare
           make -j 2
 
       - name: Clone Regression Tests
@@ -418,4 +418,4 @@ jobs:
           echo "Using testsuite from commit:"
           git log -1 --format=%H
           echo ""
-          ./run.sh ../libass/compare/compare ../libass/profile/profile
+          ./run.sh ../libass/compare/compare ../libass/fuzz/fuzz

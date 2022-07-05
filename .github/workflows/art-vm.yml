@@ -183,11 +183,11 @@ jobs:
         run: |
           cd libass
           ./autogen.sh
-          ${{ matrix.confenv }} ./configure ${{ matrix.confflags }} --enable-profile --enable-compare
+          ${{ matrix.confenv }} ./configure ${{ matrix.confflags }} --enable-fuzz --enable-compare
           make -j 2
 
       - name: Run Regression Tests
         run: |
           cd libass-tests
           ART_REG_SKIP="${{ matrix.art_reg_skip }}" \
-          ./run.sh ../libass/compare/compare ../libass/profile/profile
+          ./run.sh ../libass/compare/compare ../libass/fuzz/fuzz
