@@ -31,7 +31,11 @@ find "$tstDir" -maxdepth 1 -mindepth 1 -type d ! -name ".*" -print0 \
             "$2" "$1"
         fi
         ret="$?"
-        echo ""
+        if [ "$ret" -ne 0 ] ; then
+            printf "FAILURE: %s (%s)\\n\\n" "$1" "$ret"
+        else
+            echo ""
+        fi
         exit "$ret"
     ' _ "{}" "$cmpExe"
 es="$?"
