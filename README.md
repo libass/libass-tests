@@ -51,14 +51,5 @@ The shell scripts assume the presence of the non-POSIX
 Otherwise pure POSIX.
 
 ## Todo
- - Crash test would ideally use a dedicated test/fuzzer consumer
-   like eg [this](https://github.com/TheOneric/libass/commit/fuzz),
-   instead of relying on profile, which processes each events more
-   often than needed for this purpose and we need to determine the
-   start and endtime of samples
-
- - Ideally the binary samples would not be stored in the git repo
-   but fetch from rsync or so *(Git LFS is not really suitable
-   as it's availability across different platforms isn't great)*
-   But on the other hand, we rarely need to update the samples
-   or fetch the whole history anyway.
+ - Crash test would ideally use a high coverage corpus,
+   instead of the few randomly thrown together files used now.
