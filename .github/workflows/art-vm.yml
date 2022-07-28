@@ -17,8 +17,8 @@ on:
 
 jobs:
   ART-VM:
-    # Currently only MacOS 10.15 runners can do virtualisation
-    runs-on: macos-10.15
+    # Currently only MacOS 12 runners can do virtualisation
+    runs-on: macos-12
     # Bot-friendly names
     name: ${{ matrix.name }}
     strategy:

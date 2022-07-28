@@ -345,15 +345,15 @@ jobs:
             msystem: MINGW32
             package_prefix: mingw-w64-i686
             cflags: '-msse -msse2 -mfpmath=sse'
-          - name: 'ART (applex86, macos-10.15)'
-            os: macos-10.15
+          - name: 'ART (applex86, macos-latest)'
+            os: macos-latest
             shell: bash
     defaults:
       run:
         shell: ${{ matrix.shell }}
     steps:
       - name: Apple - Install Dependencies
-        if: matrix.os == 'macos-10.15'
+        if: matrix.os == 'macos-latest'
         run: |
           # fontconfig, freetype, autoconf and libtool are preinstalled
           # and `brew install` fails if a non-uptodate version is already installed
