@@ -339,27 +339,10 @@ jobs:
             msystem: UCRT64
             package_prefix: mingw-w64-ucrt-x86_64
             cflags: '-DWINAPI_FAMILY=WINAPI_FAMILY_APP -specs=/tmp/windowsapp.specs'
-          - name: 'ART (microsoft32, windows-MINGW32)'
-            os: windows-2019
-            shell: 'msys2 {0}'
-            msystem: MINGW32
-            package_prefix: mingw-w64-i686
-            cflags: '-msse -msse2 -mfpmath=sse'
-          - name: 'ART (applex86, macos-latest)'
-            os: macos-latest
-            shell: bash
     defaults:
       run:
         shell: ${{ matrix.shell }}
     steps:
-      - name: Apple - Install Dependencies
-        if: matrix.os == 'macos-latest'
-        run: |
-          # fontconfig, freetype, autoconf and libtool are preinstalled
-          # and `brew install` fails if a non-uptodate version is already installed
-          #brew upgrade fontconfig freetype autoconf libtool
-          brew install automake fribidi harfbuzz nasm
-
       - name: Microsoft - Setup MSys2
         uses: msys2/setup-msys2@v2
         if: matrix.os == 'windows-2019'
