@@ -57,37 +57,62 @@ jobs:
           ' > /tmp/artci/vm-shell
           sudo chmod a+x /tmp/artci/vm-shell
 
-      - name: Fetch and Start VM-Image
+      - name: Create Vagrantfile
         shell: bash
         run: |
           echo '
             Vagrant.configure("2") do |config|
               config.vm.box = "'"${{ matrix.vbox }}"'"
               config.vm.boot_timeout = 6000
+              config.vm.synced_folder ".", "/vagrant", disabled: true
+              config.ssh.insert_key = false
             end
           ' > Vagrantfile
-          (
-            # Sometimes this fails with HTTP erorr 429 (too many requests)
-            # The exit status is not a godd indicator, so use the status output instead
-            flag=1
-            i=0
-            set +e
-            while [ "$flag" -ne 0 ] ; do
-              echo "Attempt $(( i + 1 )) to download vagrantbox; waiting $(( i * 61 ))s before download."
-              sleep "$(( i * 61 ))"
-              vagrant up --provider virtualbox 2>&1
-              vagrant status --machine-readable | grep state,running
-              flag="$?"
-              echo "Flag: $flag"
-              i="$(( i + 1 ))"
-              if [ "$i" -gt 5 ] ; then
-                exit "$flag"
-              fi
-              echo ""
-            done \
-              | grep --line-buffered -vE 'Progress:'
-            set -e
-          )
+
+      - name: Check Newest Box Version
+        id: config
+        shell: bash
+        run: |
+          pip3 install --user jq
+          FULLBOX="${{ matrix.vbox }}"
+          owner="${FULLBOX%%/*}"
+          box="${FULLBOX#*/}"
+          version="$(
+            curl https://app.vagrantup.com/"$owner"/boxes/"$box".json \
+            | jq -r '[.versions[].version] | max'
+          )"
+          cache_key="vagrant_${FULLBOX}_${version}"
+          echo "::set-output name=cache_key::${cache_key}"
+
+      - name: Retrieve Cached Images
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: package.box
+          key: ${{ steps.config.outputs.cache_key }}
+
+      - name : Import Cached Image
+        if: steps.cache.outputs.cache-hit == 'true'
+        shell: bash
+        run: |
+          vagrant box add --name "${{ matrix.vbox }}" package.box
+
+      - name: Fetch Remote Image and Prepare for Cache
+        if: steps.cache.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          vagrant box add --provider virtualbox "${{ matrix.vbox }}"
+          # We can only pacakge local environments not the fetched box directly
+          # To create the environment machine must be booted once
+          # (but for packaging it must be shutdown again)
+          vagrant up
+          vagrant halt
+          vagrant package --output package.box
+
+      - name: Start VM
+        shell: bash
+        run: |
+          vagrant up
           vagrant ssh -c 'uname -a ; whoami'
 
       # The OI image is too old to be able to install dependencies without an upgrade first
