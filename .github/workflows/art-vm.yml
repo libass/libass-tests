@@ -3,6 +3,8 @@ name: Automatic Regression Tests in VMs
 on:
   push:
     branches: [master, ci]
+  schedule:
+    - cron: '22 1 * * *'
   workflow_dispatch:
     # Even with defaults, jobs not started via dispatch will only have blank inputs
     inputs:
