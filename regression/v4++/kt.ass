@@ -1,0 +1,49 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 206
+PlayResY: 206
+ScaledBorderAndShadow: yes
+YCbCr Matrix: None
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: D,DejaVu Sans,35,&HFFFFFF,&H0000FF,&H000000,&H000000,0,0,0,0,100,100,0,0,1,0,0,2,20,5,4,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Comment: 1,0:00:01.00,0:00:02.00,D,,0,0,0,,{\an7\c&H00FF00}Test \kt placement
+Dialogue: 0,0:00:01.00,0:00:02.00,D,,0,0,0,,{\kf100}Kara{\kt\kf100}oke
+Dialogue: 0,0:00:01.00,0:00:02.00,D,,0,0,0,,{\kf100\kt}Kara{\kf100}oke
+
+Comment: 1,0:00:02.00,0:00:04.00,D,,0,0,0,,{\an7\c&H00FF00}Test \kt with values
+Dialogue: 0,0:00:02.00,0:00:04.00,D,,0,0,0,,{\kf100}Kara{\kt0  \kf100}oke
+Dialogue: 0,0:00:02.00,0:00:04.00,D,,0,0,0,,{\kf100}Kara{\kt50 \kf100}oke
+Dialogue: 0,0:00:02.00,0:00:04.00,D,,0,0,0,,{\kf100}Kara{\kt75 \kf100}oke
+Dialogue: 0,0:00:02.00,0:00:04.00,D,,0,0,0,,{\kf100}Kara{\kt100\kf100}oke
+Dialogue: 0,0:00:02.00,0:00:04.00,D,,0,0,0,,{\kf100}Kara{      \kf100}oke
+
+Comment: 1,0:00:04.00,0:00:06.00,D,,0,0,0,,{\an7\c&H00FF00}Test \kt placement with multiple \kf tags
+Dialogue: 0,0:00:04.00,0:00:06.00,D,,0,0,0,,{\kf100\kf100}Kara{\kt\kf100}oke
+Dialogue: 0,0:00:04.00,0:00:06.00,D,,0,0,0,,{\kf100\kf100\kt}Kara{\kf100}oke
+Dialogue: 0,0:00:04.00,0:00:06.00,D,,0,0,0,,{\kf100\kt\kf100}Kara{\kf100}oke
+Dialogue: 0,0:00:04.00,0:00:06.00,D,,0,0,0,,{\kt\kf50}Ka{\kf70\k0}ra{\kf80}oke
+Dialogue: 0,0:00:04.00,0:00:06.00,D,,0,0,0,,{\kt\k50 }Ka{\k70\k0 }ra{\k80 }oke
+
+Comment: 1,0:00:06.00,0:00:08.00,D,,0,0,0,,{\an7\c&H00FF00}Test \kt in the middle of karaoke word
+Dialogue: 0,0:00:06.00,0:00:08.00,D,,0,0,0,,{\kf100}Ka{\kt}ra{\kf100}oke
+Dialogue: 0,0:00:06.00,0:00:08.00,D,,0,0,0,,{\kf100}Ka{\kt}ra{\kt75\kf100}oke
+Dialogue: 0,0:00:06.00,0:00:08.00,D,,0,0,0,,{\kf100}Ka{\kt75}ra{\kt\kf100}oke
+Dialogue: 0,0:00:06.00,0:00:08.00,D,,0,0,0,,{\kf100}Ka{\kt75}r{\kt50}a{\kf100}oke
+Dialogue: 0,0:00:06.00,0:00:08.00,D,,0,0,0,,{\kf100}Kara{\kf100}ok{\kt}e
+
+Comment: 1,0:00:08.00,0:00:10.00,D,,0,0,0,,{\an7\c&H00FF00}Test \kt in middle of karaoke and different overall run
+Dialogue: 0,0:00:08.00,0:00:10.00,D,,0,0,0,,{\kf100}Ka{\kt}r{\1c&H00FFAA}a{\kf100}oke
+Dialogue: 0,0:00:08.00,0:00:10.00,D,,0,0,0,,{\kf100}Ka{\1c&H00FFAA}r{\kt}a{\kf100}oke
+
+Comment: 1,0:00:10.00,0:00:14.00,D,,0,0,0,,{\an7\c&H00FF00}Test \kt followed by multiple \kf tags
+Dialogue: 0,0:00:10.00,0:00:12.00,D,,0,0,0,,{\kf100}Kara{\kt\kf100\kf100}oke
+Dialogue: 0,0:00:10.00,0:00:12.00,D,,0,0,0,,{\kf100}Kara{\kt\kf100\kf0  }oke
+Dialogue: 0,0:00:10.00,0:00:12.00,D,,0,0,0,,{\kf100}Ka{\kt}ra{\kf100\kf100}oke
+Dialogue: 0,0:00:10.00,0:00:12.00,D,,0,0,0,,{\kf100}Ka{\kt}ra{\kf100\kf0  }oke
+Dialogue: 0,0:00:10.00,0:00:12.00,D,,0,0,0,,{\kf100}Ka{\kt}r{\kf100\kf0}a{\kf100}oke
+
