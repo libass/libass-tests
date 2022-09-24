@@ -1,0 +1,38 @@
+[Script Info]
+Title: Test Effect's delay scaling and precision
+ScriptType: v4.00+
+WrapStyle: 0
+YCbCr Matrix: None
+ScaledBorderAndShadow: yes
+PlayResX: 160
+PlayResY: 90
+; PlayRes is one-eigth of storage res
+LayoutResX: 1280
+LayoutResY: 720
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Label,DejaVu Sans,3.75,&H00FFFFFF,&H000000FF,&H00515154,&H00646466,0,0,0,0,100,100,0,0,1,0,0,7,0,0,1,0
+Style: Probe,DejaVu Sans,7.5,&H00FFFFFF,&H000000FF,&H00515154,&H00646466,0,0,0,0,100,100,0,0,1,0,0,5,0,0,1,0
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+; delay=0 (and other small values) means one millisecond per storage pixels, due to VSF shenanigangs
+Dialogue: 1,0:00:00.00,0:00:01.00,Label,,0,0,0,,Efect: Banner, delay=0
+Dialogue: 0,0:00:00.00,0:00:01.00,Probe,,0,0,0,Banner;0,This is the actual text which will be displayed as a subtitle onscreen. Everything after the 9th comma is treated as the subtitle text, so it can include commas.
+
+Dialogue: 1,0:00:01.00,0:00:02.00,Label,,0,0,0,,Effect: Scroll up, delay=0 - to 90 (PlayResY)
+Dialogue: 0,0:00:01.00,0:00:02.00,Probe,,0,0,0,Scroll up;0;90;0,This is the actual text which will be displayed as a subtitle onscreen. Everything after the 9th comma is treated as the subtitle text, so it can include commas.
+
+Dialogue: 1,0:00:02.00,0:00:03.00,Label,,0,0,0,,Effect: Scroll down, delay=0 - to 90 (PlayResY)
+Dialogue: 0,0:00:02.00,0:00:03.00,Probe,,0,0,0,Scroll down;0;90;0,This is the actual text which will be displayed as a subtitle onscreen. Everything after the 9th comma is treated as the subtitle text, so it can include commas.
+
+; while for larger values, delay is relative to PlayRes but affected by rounding errors
+Dialogue: 1,0:00:03.00,0:00:04.00,Label,,0,0,0,,Efect: Banner, delay=25
+Dialogue: 0,0:00:03.00,0:00:04.00,Probe,,0,0,0,Banner;25,This is the actual text which will be displayed as a subtitle onscreen. Everything after the 9th comma is treated as the subtitle text, so it can include commas.
+
+Dialogue: 1,0:00:04.00,0:00:05.00,Label,,0,0,0,,Effect: Scroll up, delay=25 - to 90 (PlayResY)
+Dialogue: 0,0:00:04.00,0:00:05.00,Probe,,0,0,0,Scroll up;0;90;25,This is the actual text which will be displayed as a subtitle onscreen. Everything after the 9th comma is treated as the subtitle text, so it can include commas.
+
+Dialogue: 1,0:00:05.00,0:00:06.00,Label,,0,0,0,,Effect: Scroll down, delay=25 - to 90 (PlayResY)
+Dialogue: 0,0:00:05.00,0:00:06.00,Probe,,0,0,0,Scroll down;0;90;25,This is the actual text which will be displayed as a subtitle onscreen. Everything after the 9th comma is treated as the subtitle text, so it can include commas.

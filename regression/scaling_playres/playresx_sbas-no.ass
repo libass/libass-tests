@@ -1,0 +1,38 @@
+[Script Info]
+Title: Test features scaling with PlayResX
+ScriptType: v4.00+
+WrapStyle: 0
+YCbCr Matrix: None
+ScaledBorderAndShadow: no
+PlayResX: 160
+PlayResY: 720
+; Original video resolution used for testing:
+LayoutResX: 1280
+LayoutResY: 720
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Label,DejaVu Sans,30,&H00FFFFFF,&H000000FF,&H00515154,&H00646466,0,0,0,0,100,100,0,0,1,0,0,7,1,1,8,0
+Style: Probe,DejaVu Sans,60,&H00FFFFFF,&H000000FF,&H00515154,&H00646466,0,0,0,0,100,100,0,0,1,0,0,5,1,1,8,0
+Style: Prob3,DejaVu Sans,60,&H00FFFFFF,&H000000FF,&H00515154,&H00646466,0,0,0,0,100,100,0,0,3,0,0,5,1,1,8,0
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Comment: 2,0:00:00.00,0:00:20.00,Label,,0000,0000,0000,,{\fs-50\c&H000000H\an9}PlayResX = StorageX / 8
+
+Comment: 1,0:00:00.00,0:00:01.00,Label,,0000,0000,0000,,bord=10, BorderStyle=1, SBAS=no
+Dialogue: 0,0:00:00.00,0:00:01.00,Probe,,0000,0000,0000,,{\bord10}Text
+
+Comment: 1,0:00:01.00,0:00:02.00,Label,,0000,0000,0000,,bord=10, BorderStyle=3, SBAS=no
+Dialogue: 0,0:00:01.00,0:00:02.00,Prob3,,0000,0000,0000,,{\bord10}Text
+
+Comment: 1,0:00:02.00,0:00:03.00,Label,,0000,0000,0000,,shad=10, SBAS=no
+Dialogue: 0,0:00:02.00,0:00:03.00,Probe,,0000,0000,0000,,{\shad10}Text
+
+
+
+Comment: 1,0:00:03.00,0:00:04.00,Label,,0000,0000,0000,,fsp=5
+Dialogue: 0,0:00:03.00,0:00:04.00,Probe,,0000,0000,0000,,{\fsp5}WWWW
+
+Comment: 1,0:00:04.00,0:00:05.00,Label,,0000,0000,0000,,Vector Drawing [m 0 0 l 0 100 100 100 100 0]
+Dialogue: 0,0:00:04.00,0:00:05.00,Probe,,0000,0000,0000,,{\p1}m 0 0 l 0 100 100 100 100 0{\p0}
