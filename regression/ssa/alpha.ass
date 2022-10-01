@@ -1,0 +1,23 @@
+[Script Info]
+Title: Test AlphaLevel parameter of SSA Styles (all but shadow should use AlphaLevel)
+ScriptType: v4.00
+PlayResX: 108
+PlayResY: 56
+YCbCr Matrix: None
+ScaledBorderAndShadow: yes
+
+[V4 Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, TertiaryColour, BackColour, Bold, Italic, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, AlphaLevel, Encoding
+Style: AFF,DejaVu Sans,42,&HFFFFFF,&H000000,&H000000,&H13206A,0,0,1,6,0,9,10,0,1,&HFF,0
+Style: A30,DejaVu Sans,42,&HFFFFFF,&H000000,&H000000,&H13206A,0,0,1,6,0,9,10,0,1,&H30,0
+Style: A00,DejaVu Sans,42,&HFFFFFF,&H000000,&H000000,&H13206A,0,0,1,6,0,9,10,0,1,&H00,0
+Style: Ang,DejaVu Sans,42,&HFFFFFF,&H000000,&H000000,&H13206A,0,0,1,6,0,9,10,0,1,&HFFFFFFEA,0
+Style: Alg,DejaVu Sans,42,&HFFFFFF,&H000000,&H000000,&H13206A,0,0,1,6,0,9,10,0,1,&H3FF,0
+
+[Events]
+Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:01.00,AFF,,0,0,0,,{\xshad50}W
+Dialogue: 0,0:00:01.00,0:00:02.00,A30,,0,0,0,,{\xshad50}W
+Dialogue: 0,0:00:02.00,0:00:03.00,A00,,0,0,0,,{\xshad50}W
+Dialogue: 0,0:00:03.00,0:00:04.00,Ang,,0,0,0,,{\xshad50}W
+Dialogue: 0,0:00:04.00,0:00:05.00,Alg,,0,0,0,,{\xshad50}W
