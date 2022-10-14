@@ -120,7 +120,7 @@ jobs:
           if [ "x${{ matrix.arch }}" = xx32 ] ; then
             cache_period="2022-04"
           fi
-          echo "::set-output name=cache_period::${cache_period}"
+          echo "cache_period=${cache_period}" >> $GITHUB_OUTPUT
 
           echo "QEMU_ARCH=${qarch}"   >> $GITHUB_ENV
           echo "OPRE=${outer_prefix}" >> $GITHUB_ENV

@@ -84,7 +84,7 @@ jobs:
             | jq -r '[.versions[].version] | max'
           )"
           cache_key="vagrant_${FULLBOX}_${version}"
-          echo "::set-output name=cache_key::${cache_key}"
+          echo "cache_key=${cache_key}" >> $GITHUB_OUTPUT
 
       - name: Retrieve Cached Images
         id: cache
