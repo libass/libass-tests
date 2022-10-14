@@ -123,6 +123,7 @@ jobs:
         run: |
           case "${{ matrix.vbox }}" in
             openindiana/*)
+              pfexec pkg uninstall system/library/processor || :
               pfexec pkg update -r --no-backup-be || :
               ;;
             */NetBSD*)
