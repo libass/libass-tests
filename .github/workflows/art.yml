@@ -116,10 +116,6 @@ jobs:
             tmp="$(echo "$(date +%j)" | bc )"
           fi
           cache_period="$(printf "%d-%02d" "$(date +%Y)" "$(( tmp / 44 ))")"
-          # TEMPORARY due to broken libtool (arch=all) cpp dep
-          if [ "x${{ matrix.arch }}" = xx32 ] ; then
-            cache_period="2022-04"
-          fi
           echo "cache_period=${cache_period}" >> $GITHUB_OUTPUT
 
           echo "QEMU_ARCH=${qarch}"   >> $GITHUB_ENV
