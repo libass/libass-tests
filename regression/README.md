@@ -25,6 +25,17 @@ Run a single test group located in `tdir` with:
  fi
 ```
 
+### Environment Variables
+When using `run-all.sh` some environment variables can be used
+to adjust its behaviour.
+
+ - `ART_REG_SKIP` can be set to a POSIX Extended Regular Expression and all test
+   directories with a matching name will be skipped. This is useful for e.g. the
+   non-Unicode font tests, as they rely on an iconv implementation being used
+   and supporting all relevant conversions.
+ - `ART_REG_TOLERANCE` changes how tolerant tests are of small changes.
+   It will be passed to `compare`’s pass level option and defaults to `2`.
+
 ### Directory strucutre
 Each non-dot folder contains one group of active tests.
 `.fonts` contains all font files.
