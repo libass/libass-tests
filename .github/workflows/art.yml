@@ -41,7 +41,8 @@ jobs:
           - arch: i386
             suite: buster
             cflags: '-msse -msse2 -mfpmath=sse'
-            chroot-rev: 9
+            sanity: sane?
+            chroot-rev: 10
           # Yes, GHA's kernel supports x32 syscalls
           - arch: x32
             suite: sid
@@ -175,10 +176,12 @@ jobs:
 
           # Set additional packages for some archs
           case "${{ matrix.arch }}" in
-            amd64)    add_pkgs="nasm libasan5 libubsan1" ;;
-            x32|i386) add_pkgs="nasm" ;;
-            *)        add_pkgs="" ;;
+            amd64|i386|x32)    add_pkgs="nasm" ;;
+            *)                 add_pkgs="" ;;
           esac
+          if [ -n "${{ matrix.sanity }}" ] ; then
+            add_pkgs="$add_pkgs libasan5 libubsan1"
+          fi
 
           # ime we don't need to mount everything for those setup steps
           sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash /debootstrap/debootstrap --second-stage
