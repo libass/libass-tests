@@ -29,8 +29,10 @@ jobs:
         include:
           - name: 'ART (netbsd64, NetBSD-9, amd64)'
             vbox: NetBSD/NetBSD-9.1
-            confenv: ''
+            # Leak detection appears to find false positives in libc and external libs
+            confenv: 'ASAN_OPTIONS=detect_leaks=0 CC="gcc -fsanitize=address -fsanitize=undefined,float-cast-overflow -fno-sanitize-recover=all"'
             confflags: ''
+            runenv: 'ASAN_OPTIONS=detect_leaks=0'
           - name: 'ART (illumos32, OpenIndiana, i686)'
             vbox: openindiana/hipster
             confenv: 'CC="gcc -m32 -msse -msse2 -mfpmath=sse"'
@@ -217,5 +219,6 @@ jobs:
       - name: Run Regression Tests
         run: |
           cd libass-tests
+          ${{ matrix.runenv }} \
           ART_REG_SKIP="${{ matrix.art_reg_skip }}" \
           ./run.sh ../libass/compare/compare ../libass/fuzz/fuzz
