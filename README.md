@@ -36,7 +36,7 @@ Does use the system font provider.
 
 ## Run all tests
 ```sh
-PARALLEL=1 ./run.sh <libass-dir>/compare/compare <libass-dir>/profile/profile
+PARALLEL=1 ./run.sh <libass-dir>/compare/compare <libass-dir>/fuzz/fuzz
 ```
 
 How many tests are run simultaneously is controlled via the `PARALLEL`

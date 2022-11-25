@@ -3,7 +3,7 @@
 #Defines PARALLEL, getDir, assertExe, assertUsage and xargsRetCode2Msg
 . ../lib.sh
 
-assertUsage "profile" "$@"
+assertUsage "fuzz" "$@"
 
 fzzExe="$1"
 tstDir="$(getDir $2)"
