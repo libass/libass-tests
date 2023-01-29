@@ -9,4 +9,4 @@ Style: Default,Aileron,100,&H00000000,&H00000000,&H00000000,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.00,0:00:02.00,Default,,0,0,0,,{\blur32}+\h·\h¶\h{\p1}m 0 0 l 100 0 100 100 0 100
+Dialogue: 0,0:00:00.00,0:00:02.00,Default,,0,0,0,,{\q2\blur32}+ · ¶ {\p1}m 0 0 l 100 0 100 100 0 100
