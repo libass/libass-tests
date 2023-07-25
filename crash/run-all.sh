@@ -16,7 +16,7 @@ find "$tstDir" -maxdepth 1 -type f -name "*.ass" ! -name ".*" -print0 \
     sh -c '
         echo "[CRASH-TEST]: $1"
 
-        "$2" "$1" 1>/dev/null
+        $ART_BINWRAP "$2" "$1" 1>/dev/null
         ret="$?"
         if [ "$ret" -eq "0" ] ; then
             echo "OK."

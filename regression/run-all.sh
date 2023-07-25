@@ -28,9 +28,9 @@ find "$tstDir" -maxdepth 1 -mindepth 1 -type d ! -name ".*" -print0 \
         fi
         echo "[TEST]: $1"
         if [ -f "$1"/scale ] ; then
-            "$2" "$1" -s "$(cat "$1"/scale)" -p "$ART_REG_TOLERANCE"
+            $ART_BINWRAP "$2" "$1" -s "$(cat "$1"/scale)" -p "$ART_REG_TOLERANCE"
         else
-            "$2" "$1" -p "$ART_REG_TOLERANCE"
+            $ART_BINWRAP "$2" "$1" -p "$ART_REG_TOLERANCE"
         fi
         ret="$?"
         if [ "$ret" -ne 0 ] ; then

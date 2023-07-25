@@ -50,6 +50,13 @@ The shell scripts assume the presence of the non-POSIX
 `xargs -0` and `find -print0 -maxdepth -mindepth` extensions.
 Otherwise pure POSIX.
 
+## Environment Variables
+
+Check the `README.md`s in subfolders for environment variables affecting only specific test types.
+The following affect all types:
+
+  - `ART_BINWRAP` defines a wrapper command for test binaries
+
 ## Todo
  - Crash test would ideally use a high coverage corpus,
    instead of the few randomly thrown together files used now.
