@@ -50,8 +50,8 @@ jobs:
             chroot-rev: 10
           - arch: riscv64
             suite: sid
-            port: yes
-            chroot-rev: 10
+            port: no
+            chroot-rev: 11
           # Enable sanitisers for native build
           - arch: amd64
             sanity: sane?
