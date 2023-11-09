@@ -29,7 +29,7 @@ jobs:
       fail-fast: false
       matrix:
         arch: [amd64, s390x, arm64, mips64el]
-        suite: [buster]
+        suite: [bookworm]
         chroot-rev: [9]
         confopts: [""]
         cflags: [""]
@@ -39,7 +39,7 @@ jobs:
           # SSE2 was introduced in 2000 by Intel and is present in both 32bit and 64bit
           # CPUs from both AMD and Intel since 2003. Our ASM needs at least SSE2 anyway.
           - arch: i386
-            suite: buster
+            suite: bookworm
             cflags: '-msse -msse2 -mfpmath=sse'
             sanity: sane?
             chroot-rev: 10
@@ -180,7 +180,9 @@ jobs:
             *)                 add_pkgs="" ;;
           esac
           if [ -n "${{ matrix.sanity }}" ] ; then
-            add_pkgs="$add_pkgs libasan5 libubsan1"
+            ubver="$(apt-cache search libubsan | awk '/^libubsan[0-9]* / {print substr($1, 9)}' | sort -rn | head -n1)"
+            asver="$(apt-cache search libasan | awk '/^libasan[0-9]* / {print substr($1, 8)}' | sort -rn | head -n1)"
+            add_pkgs="$add_pkgs libasan${asver} libubsan${ubver}"
           fi
 
           # ime we don't need to mount everything for those setup steps
@@ -193,7 +195,7 @@ jobs:
             apt-get install -y --no-install-recommends --no-install-suggests \
               autoconf automake make libtool pkg-config \
               gcc \
-              libfreetype6-dev libfribidi-dev libfontconfig-dev libharfbuzz-dev libpng-dev \
+              libfreetype-dev libfribidi-dev libfontconfig-dev libharfbuzz-dev libpng-dev \
               '"$add_pkgs"'
 
             groupadd -g 1000 artci
