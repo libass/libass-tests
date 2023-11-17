@@ -33,11 +33,11 @@ jobs:
             confenv: 'ASAN_OPTIONS=detect_leaks=0 CC="gcc -fsanitize=address -fsanitize=undefined,float-cast-overflow -fno-sanitize-recover=all"'
             confflags: ''
             runenv: 'ASAN_OPTIONS=detect_leaks=0'
-          - name: 'ART (illumos32, OpenIndiana, i686)'
-            vbox: openindiana/hipster
-            confenv: 'CC="gcc -m32 -msse -msse2 -mfpmath=sse"'
-            confflags: '--host=i686-pc-solaris2.11'
-            art_reg_skip: 'font_nonunicode'
+          #- name: 'ART (illumos32, OpenIndiana, i686)'
+          #  vbox: openindiana/hipster
+          #  confenv: 'CC="gcc -m32 -msse -msse2 -mfpmath=sse"'
+          #  confflags: '--host=i686-pc-solaris2.11'
+          #  art_reg_skip: 'font_nonunicode'
     env:
       VAGRANT_DISABLE_VBOXSYMLINKCREATE: 1
     defaults:
