@@ -1,0 +1,162 @@
+name: Automatic Regression Tests in QEMU VMs
+
+on:
+  push:
+    branches: [master, ci]
+  schedule:
+    - cron: '22 1 * * *'
+  workflow_dispatch:
+    # Even with defaults, jobs not started via dispatch will only have blank inputs
+    inputs:
+      libass_repo:
+        description: 'An instance of a libass git repo'
+        required: false
+        default: 'https://github.com/libass/libass.git'
+      libass_ref:
+        description: 'Git ref of libass repo to run tests on; defaults to newest commit on default branch'
+        required: false
+        default: ''
+
+jobs:
+  ART-VM:
+    # This does NOT have KVM, but the only runners with native virtualisation (MacOS) are unreliable
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Bot-friendly names
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: 'ART (netbsd64-qemu, NetBSD-9, amd64)'
+            os_image: netbsd
+            os_version: 9.3
+            CC: 'gcc -fsanitize=address -fsanitize=undefined,float-cast-overflow -fno-sanitize-recover=all'
+            confflags: ''
+            # Leak detection appears to find false positives in libc and external libs
+            ASAN_OPTIONS: detect_leaks=0
+            ART_REG_SKIP: ''
+          # No illumos in cross-platform-actions/action yet, see
+          #   https://github.com/cross-platform-actions/action/issues/20
+          #- name: 'ART (illumos32-qemu, OpenIndiana, i686)'
+          #  vbox: openindiana/hipster
+          #  CC: gcc -m32 -msse -msse2 -mfpmath=sse
+          #  confflags: '--host=i686-pc-solaris2.11'
+          #  ASAN_OPTIONS: ''
+          #  ART_REG_SKIP: 'font_nonunicode'
+    env:
+      ASAN_OPTIONS: ${{ matrix.ASAN_OPTIONS }}
+
+    steps:
+      - name: Checkout Git Repos
+        run: |
+          if [ -z "${{ github.event.inputs.libass_repo }}" ] ; then
+            LIBASS_REPO="https://github.com/libass/libass.git"
+          else
+            LIBASS_REPO="${{ github.event.inputs.libass_repo }}"
+          fi
+
+          # libass
+          echo "Cloning Libass Repo: $LIBASS_REPO"
+          git clone --depth=1 "$LIBASS_REPO" libass
+          cd libass
+          if [ ! -z "${{ github.event.inputs.libass_ref }}" ] ; then
+            echo "Checking out non-default commit..."
+            git fetch --depth=1 origin "${{ github.event.inputs.libass_ref }}":artci_laref
+            git checkout --force artci_laref
+          fi
+          echo "Testing libass commit:"
+          git log -1 --format=%H
+
+          cd ..
+          echo ""
+
+          # regression tests
+          git clone --depth=1 'https://github.com/${{ github.repository }}.git' libass-tests
+          cd libass-tests
+          if [ x"${{ github.ref }}" != x ] ; then
+            git fetch --depth=1 origin ${{ github.ref }}:artci_laref
+            git checkout --force artci_laref
+          else
+            echo "Could not determine ref! Fallback to current master."
+          fi
+          echo "Using testsuite from commit:"
+          git log -1 --format=%H
+
+      - name: Install Packages
+        uses: cross-platform-actions/action@v0.22.0
+        with:
+          operating_system: ${{ matrix.os_image }}
+          version: ${{ matrix.os_version }}
+          # env vars not really needed here, but must match across all steps
+          environment_variables: ASAN_OPTIONS
+          shutdown_vm: false
+          sync_files: false
+          run: |
+            # DEBUG
+            env | sort
+            # Install Packages
+            case "${{ matrix.os_image }}" in
+              netbsd)
+                # We'll use the base system's version of gcc
+                sudo pkgin -y install \
+                    mozilla-rootcerts-openssl git nasm \
+                    autoconf automake libtool-base pkg-config \
+                    freetype fribidi harfbuzz fontconfig png
+                ;;
+              openindiana/*)
+                pfexec pkg install --no-backup-be \
+                    crypto/ca-certificates \
+                    developer/versioning/git \
+                    developer/gcc-10 \
+                    developer/assembler/nasm \
+                    developer/build/autoconf \
+                    developer/build/automake \
+                    developer/build/libtool \
+                    developer/build/pkg-config \
+                    system/library/freetype-2 \
+                    library/fribidi \
+                    library/c++/harfbuzz \
+                    system/library/fontconfig \
+                    image/library/libpng
+                ;;
+            esac
+
+      - name: Build libass
+        uses: cross-platform-actions/action@v0.22.0
+        with:
+          operating_system: ${{ matrix.os_image }}
+          version: ${{ matrix.os_version }}
+          environment_variables: ASAN_OPTIONS
+          shutdown_vm: false
+          sync_files: true
+          run: |
+            cd libass
+            ./autogen.sh
+            ./configure CC="${{ matrix.CC }}" ${{ matrix.confflags }} --enable-fuzz --enable-compare
+            make -j 2
+            cd ..
+
+      - name: Run Tests
+        uses: cross-platform-actions/action@v0.22.0
+        with:
+          operating_system: ${{ matrix.os_image }}
+          version: ${{ matrix.os_version }}
+          environment_variables: ASAN_OPTIONS
+          shutdown_vm: false
+          sync_files: true
+          run: |
+            cd libass-tests
+            ART_REG_SKIP="${{ matrix.ART_REG_SKIP }}" \
+            ./run.sh ../libass/compare/compare ../libass/fuzz/fuzz
+
+      - name: Shutdown VM
+        if: always()
+        uses: cross-platform-actions/action@v0.22.0
+        with:
+          operating_system: ${{ matrix.os_image }}
+          version: ${{ matrix.os_version }}
+          environment_variables: ASAN_OPTIONS
+          shutdown_vm: true
+          sync_files: false
+          run: echo 'Byebye ^^)/"'
