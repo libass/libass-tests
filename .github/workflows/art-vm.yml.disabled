@@ -19,8 +19,6 @@ on:
 
 jobs:
   ART-VM:
-    # Lately (end 2023, early 2024) MacOS VM jobs are extremly unreliable; disable for the time being
-    if: false
     # Currently only MacOS 12 runners can do virtualisation
     runs-on: macos-12
     # Bot-friendly names
