@@ -90,7 +90,7 @@ jobs:
 
       - name: Retrieve Cached Images
         id: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: package.box
           key: ${{ steps.config.outputs.cache_key }}
