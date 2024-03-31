@@ -179,27 +179,30 @@ jobs:
             amd64|i386|x32)    add_pkgs="nasm" ;;
             *)                 add_pkgs="" ;;
           esac
-          if [ -n "${{ matrix.sanity }}" ] ; then
-            ubver="$(apt-cache search libubsan | awk '/^libubsan[0-9]* / {print substr($1, 9)}' | sort -rn | head -n1)"
-            asver="$(apt-cache search libasan | awk '/^libasan[0-9]* / {print substr($1, 8)}' | sort -rn | head -n1)"
-            add_pkgs="$add_pkgs libasan${asver} libubsan${ubver}"
-          fi
 
           # ime we don't need to mount everything for those setup steps
           sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash /debootstrap/debootstrap --second-stage
           sudo $OPRE chroot "$CHR_DIR" $IPRE /bin/dash -c '
             export DEBIAN_FRONTEND=noninteractive
             export LC_ALL=C.UTF-8
+            add_pkgs="'"$add_pkgs"'"
             set -e
 
             # in case something funny happened during initial creation
             apt-get --fix-broken install -y
 
+            # grab newest sanitiser versions available in chroot
+            if [ -n "${{ matrix.sanity }}" ] ; then
+              ubver="$(apt-cache search libubsan | awk '\''/^libubsan[0-9]* / {print substr($1, 9)}'\'' | sort -rn | head -n1)"
+              asver="$(apt-cache search libasan | awk '\''/^libasan[0-9]* / {print substr($1, 8)}'\'' | sort -rn | head -n1)"
+              add_pkgs="$add_pkgs libasan${asver} libubsan${ubver}"
+            fi
+
             apt-get install -y --no-install-recommends --no-install-suggests \
               autoconf automake make libtool pkgconf \
               gcc \
               libfreetype-dev libfribidi-dev libfontconfig-dev libharfbuzz-dev libpng-dev \
-              '"$add_pkgs"'
+              $add_pkgs
 
             groupadd -g 1000 artci
             useradd -m -d /home/artci -s /bin/dash -g artci -u 1000 artci
