@@ -193,7 +193,7 @@ jobs:
             set -e
 
             apt-get install -y --no-install-recommends --no-install-suggests \
-              autoconf automake make libtool pkg-config \
+              autoconf automake make libtool pkgconf \
               gcc \
               libfreetype-dev libfribidi-dev libfontconfig-dev libharfbuzz-dev libpng-dev \
               '"$add_pkgs"'
