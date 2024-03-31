@@ -125,7 +125,7 @@ jobs:
           echo "CHR_DIR=debian-${{ matrix.suite }}-${{ matrix.arch }}" >> $GITHUB_ENV
 
 
-      # Each repo is allowed up to 5GB total cache
+      # Each repo is allowed up to 10GB total cache
       # use it to store our (compressed) chroot dirs
       # (cache is branch scoped)
       - name: Retrieve Cached Chroots
