@@ -192,6 +192,9 @@ jobs:
             export LC_ALL=C.UTF-8
             set -e
 
+            # in case something funny happened during initial creation
+            apt-get --fix-broken install -y
+
             apt-get install -y --no-install-recommends --no-install-suggests \
               autoconf automake make libtool pkgconf \
               gcc \
