@@ -301,8 +301,8 @@ jobs:
           # Test libass
           echo '#!/bin/sh
             . ./env.sh
-            cd libass-tests
-            ./run.sh ../libass/compare/compare ../libass/fuzz/fuzz
+            cd libass
+            make ART_SAMPLES="../libass-tests" check
           ' > test-libass.sh
 
 

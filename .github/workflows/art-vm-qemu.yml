@@ -146,9 +146,9 @@ jobs:
           shutdown_vm: false
           sync_files: true
           run: |
-            cd libass-tests
+            cd libass
             ART_REG_SKIP="${{ matrix.ART_REG_SKIP }}" \
-            ./run.sh ../libass/compare/compare ../libass/fuzz/fuzz
+            make ART_SAMPLES="../libass-tests" check
 
       - name: Shutdown VM
         if: always()

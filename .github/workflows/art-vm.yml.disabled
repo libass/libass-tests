@@ -218,7 +218,7 @@ jobs:
 
       - name: Run Regression Tests
         run: |
-          cd libass-tests
+          cd libass
           ${{ matrix.runenv }} \
           ART_REG_SKIP="${{ matrix.art_reg_skip }}" \
-          ./run.sh ../libass/compare/compare ../libass/fuzz/fuzz
+          make ART_SAMPLES="../libass-tests" check
