@@ -289,12 +289,13 @@ jobs:
             . ./env.sh
             cd libass
             ./autogen.sh
-            CFLAGS="$CFLAGS $LIBASS_CFLAGS" ./configure "$LIBASS_CONF" --enable-fuzz --enable-compare
             if [ -z "$SANITY" ] ; then
-              make -j 2
-            else
-              make CC="gcc -fsanitize=address -fsanitize=undefined -fsanitize=float-cast-overflow -fno-sanitize-recover=all" -j 2
+              CC=""
+           else
+              CC="gcc -fsanitize=address -fsanitize=undefined -fsanitize=float-cast-overflow -fno-sanitize-recover=all"
             fi
+            CC="$CC" CFLAGS="$CFLAGS $LIBASS_CFLAGS" ./configure "$LIBASS_CONF" --enable-fuzz --enable-compare
+            make -j 2
           ' > build-libass.sh
 
           # Test libass
