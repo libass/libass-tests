@@ -148,7 +148,8 @@ jobs:
           run: |
             cd libass
             ART_REG_SKIP="${{ matrix.ART_REG_SKIP }}" \
-            make ART_SAMPLES="../libass-tests" check
+            make ART_SAMPLES="../libass-tests" check \
+            || (cat ./test-suite.log; exit 1)
 
       - name: Shutdown VM
         if: always()
