@@ -3,6 +3,7 @@ name: Automatic Regression Tests in QEMU VMs
 on:
   push:
     branches: [master, ci]
+  pull_request:
   schedule:
     - cron: '22 1 * * *'
   workflow_dispatch:

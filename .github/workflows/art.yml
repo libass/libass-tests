@@ -3,6 +3,7 @@ name: Automatic Regression Tests
 on:
   push:
     branches: [master, ci]
+  pull_request:
   schedule:
     - cron: '22 2 * * *'
   workflow_dispatch:
