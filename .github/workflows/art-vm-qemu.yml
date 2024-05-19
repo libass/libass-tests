@@ -94,8 +94,6 @@ jobs:
           shutdown_vm: false
           sync_files: false
           run: |
-            # DEBUG
-            env | sort
             # Install Packages
             case "${{ matrix.os_image }}" in
               netbsd)
