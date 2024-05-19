@@ -15,7 +15,12 @@ scale="$(cat "${testDir}scale" 2>/dev/null || echo 1)"
 
 set +e
 
-$ART_BINWRAP "$cmpExe" "$testDir" -s "$scale" -p "$ART_REG_TOLERANCE"
+if [ "$ART_REG_GEN" = "1" ] ; then
+    echo "Regenerating files..."
+    $ART_BINWRAP "$cmpExe" "$testDir" -o "$testDir" -s "$scale" -p "$ART_REG_TOLERANCE"
+else
+    $ART_BINWRAP "$cmpExe" "$testDir" -s "$scale" -p "$ART_REG_TOLERANCE"
+fi
 
 ret="$?"
 

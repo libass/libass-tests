@@ -25,6 +25,7 @@ Run a single test group located in `tdir` with:
 When using `run-all.sh` some environment variables can be used
 to adjust its behaviour.
 
+ - `ART_REG_GEN` if set to `1` all reference images will be regenerated
  - `ART_REG_SKIP` can be set to a POSIX Extended Regular Expression and all test
    directories with a matching name will be skipped. This is useful for e.g. the
    non-Unicode font tests, as they rely on an iconv implementation being used
