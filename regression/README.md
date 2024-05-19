@@ -13,16 +13,12 @@ is described further below.
 Run all tests by passing in the path to the compare executable
 and the regression-test root dir *(defaults to `.` when ommited)*.
 ```
- ./run-all.sh <dir of compare executable> [<root dir of tests>]
+./run-all.sh <path to compare executable> [<root dir of tests>]
 ```
 
 Run a single test group located in `tdir` with:
 ```
- if [ -f tdir/scale ] ; then
-    compare tdir -s "$(cat tdir/scale)"
- else
-    compare tdir
- fi
+./run-single.sh <path to compare executable> tdir
 ```
 
 ### Environment Variables
