@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-20.04
     # Run on each arch we support ASM on and furthemore
     # some additional little and big endian archs
-    # ASM:    amd64, x32, i386
+    # ASM:    amd64, i386  (x32 is no longer supported in GHA kernels)
     # Big:    s390x
     # Little: arm64, riscv64, mips64el
     strategy:
@@ -43,11 +43,6 @@ jobs:
             suite: bookworm
             cflags: '-msse -msse2 -mfpmath=sse'
             sanity: sane?
-            chroot-rev: 10
-          # Yes, GHA's kernel supports x32 syscalls
-          - arch: x32
-            suite: sid
-            port: yes
             chroot-rev: 10
           - arch: riscv64
             suite: sid
@@ -76,7 +71,7 @@ jobs:
         run: |
           # Map debian arch/abi name to qemu arch name
           case "${{ matrix.arch }}" in
-            amd64|x32)   qarch="x86_64"  ;;
+            amd64)       qarch="x86_64"  ;;
             arm64)       qarch="aarch64" ;;
             armel|armhf) qarch="arm"     ;; # Untested
             arm)         qarch="armeb"   ;; # Untested
@@ -96,7 +91,7 @@ jobs:
           outer_prefix=""
           inner_prefix=""
           case "${{ matrix.arch }}" in
-            amd64|x32)
+            amd64)
               : ;;
             i386)
               outer_prefix="linux32"
@@ -177,8 +172,8 @@ jobs:
 
           # Set additional packages for some archs
           case "${{ matrix.arch }}" in
-            amd64|i386|x32)    add_pkgs="nasm" ;;
-            *)                 add_pkgs="" ;;
+            amd64|i386)  add_pkgs="nasm" ;;
+            *)           add_pkgs="" ;;
           esac
 
           # ime we don't need to mount everything for those setup steps
