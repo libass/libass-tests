@@ -31,7 +31,7 @@ jobs:
       matrix:
         arch: [amd64, s390x, arm64, mips64el]
         suite: [bookworm]
-        chroot-rev: [9]
+        chroot-rev: [10]
         confopts: [""]
         cflags: [""]
         include:
@@ -43,11 +43,11 @@ jobs:
             suite: bookworm
             cflags: '-msse -msse2 -mfpmath=sse'
             sanity: sane?
-            chroot-rev: 10
+            chroot-rev: 11
           - arch: riscv64
             suite: sid
             port: no
-            chroot-rev: 11
+            chroot-rev: 12
           # Enable sanitisers for native build
           - arch: amd64
             sanity: sane?
@@ -100,6 +100,10 @@ jobs:
               inner_prefix="/usr/bin/qemu-${qarch}-static"
               ;;
           esac
+
+          # Host user and group id
+          echo "uid=$(id -u)" >> $GITHUB_OUTPUT
+          echo "gid=$(id -g)" >> $GITHUB_OUTPUT
 
           # Regenerate chroots regularly
           # Often a few GHA jobs suffered connection timeouts on regeneration,
@@ -200,8 +204,8 @@ jobs:
               libfreetype-dev libfribidi-dev libfontconfig-dev libharfbuzz-dev libpng-dev \
               $add_pkgs
 
-            groupadd -g 1000 artci
-            useradd -m -d /home/artci -s /bin/dash -g artci -u 1000 artci
+            groupadd -g ${{ steps.config.outputs.gid }} artci
+            useradd -m -d /home/artci -s /bin/dash -g artci -u ${{ steps.config.outputs.uid }} artci
             runuser -u artci mkdir /home/artci/workarea-skel
           '
 
@@ -257,7 +261,7 @@ jobs:
             echo ""
 
             # Fix ownership
-            sudo chown -R 1000:1000 *
+            sudo chown -R ${{ steps.config.outputs.uid }}:${{ steps.config.outputs.gid }} *
           '
 
       - name: Prepare Chroot Jobs
