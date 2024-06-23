@@ -20,7 +20,7 @@ on:
 
 jobs:
   ART:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.host_os || 'ubuntu-latest' }}
     # Run on each arch we support ASM on and furthemore
     # some additional little and big endian archs
     # ASM:    amd64, i386  (x32 is no longer supported in GHA kernels)
@@ -41,11 +41,15 @@ jobs:
           # CPUs from both AMD and Intel since 2003. Our ASM needs at least SSE2 anyway.
           - arch: i386
             suite: bookworm
+            # 24.04’s kernel doesn't enable all 32bit compat options leading to segfaults
+            host_os: 'ubuntu-22.04'
             cflags: '-msse -msse2 -mfpmath=sse'
             sanity: sane?
             chroot-rev: 11
           - arch: riscv64
             suite: sid
+            # needs at least debootstrap 1.0.128+nmu2+deb12u1 and 24.04 isn't "latest" yet
+            host_os: 'ubuntu-24.04'
             port: no
             chroot-rev: 12
           # Enable sanitisers for native build
