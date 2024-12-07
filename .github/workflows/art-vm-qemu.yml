@@ -50,20 +50,23 @@ jobs:
 
     steps:
       - name: Checkout Git Repos
+        env:
+          LIBASS_REPO: ${{ github.event.inputs.libass_repo }}
+          LIBASS_REF: ${{ github.event.inputs.libass_ref }}
+          TESTS_REPO: ${{ github.repository }}
+          TESTS_REF: ${{ github.ref }}
         run: |
-          if [ -z "${{ github.event.inputs.libass_repo }}" ] ; then
+          if [ -z "$LIBASS_REPO" ] ; then
             LIBASS_REPO="https://github.com/libass/libass.git"
-          else
-            LIBASS_REPO="${{ github.event.inputs.libass_repo }}"
           fi
 
           # libass
           echo "Cloning Libass Repo: $LIBASS_REPO"
           git clone --depth=1 "$LIBASS_REPO" libass
           cd libass
-          if [ ! -z "${{ github.event.inputs.libass_ref }}" ] ; then
+          if [ -n "$LIBASS_REF" ] ; then
             echo "Checking out non-default commit..."
-            git fetch --depth=1 origin "${{ github.event.inputs.libass_ref }}":artci_laref
+            git fetch --depth=1 origin "$LIBASS_REF":artci_laref
             git checkout --force artci_laref
           fi
           echo "Testing libass commit:"
@@ -73,10 +76,10 @@ jobs:
           echo ""
 
           # regression tests
-          git clone --depth=1 'https://github.com/${{ github.repository }}.git' libass-tests
+          git clone --depth=1 https://github.com/"${TESTS_REPO}".git libass-tests
           cd libass-tests
-          if [ x"${{ github.ref }}" != x ] ; then
-            git fetch --depth=1 origin ${{ github.ref }}:artci_laref
+          if [ -n "$TESTS_REF" ] ; then
+            git fetch --depth=1 origin "$TESTS_REF":artci_laref
             git checkout --force artci_laref
           else
             echo "Could not determine ref! Fallback to current master."

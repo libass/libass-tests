@@ -225,48 +225,57 @@ jobs:
 
 
       - name: Checkout Git Repos
+        env:
+          LIBASS_REPO: ${{ github.event.inputs.libass_repo }}
+          LIBASS_REF: ${{ github.event.inputs.libass_ref }}
+          TESTS_REPO: ${{ github.repository }}
+          TESTS_REF: ${{ github.ref }}
         run: |
-          if [ -z "${{ github.event.inputs.libass_repo }}" ] ; then
-            LIBASS_REPO="https://github.com/libass/libass.git"
-          else
-            LIBASS_REPO="${{ github.event.inputs.libass_repo }}"
+          if [ -z "$LIBASS_REPO" ] ; then
+            export LIBASS_REPO="https://github.com/libass/libass.git"
           fi
 
-          sudo sh -c '
-            set -e
-            cd "'"$CHR_DIR"'"/home/artci/workarea
+          sudo env \
+            CHR_DIR="$CHR_DIR" \
+            LIBASS_REPO="$LIBASS_REPO" \
+            LIBASS_REF="$LIBASS_REF" \
+            TESTS_REPO="$TESTS_REPO" \
+            TESTS_REF="$TESTS_REF" \
+            sh -c '
+              set -e
+              cd "$CHR_DIR"/home/artci/workarea
 
-            # libass
-            echo "Cloning Libass Repo: '"$LIBASS_REPO"'"
-            git clone --depth=1 "'"$LIBASS_REPO"'" libass
-            cd libass
-            if [ ! -z "'"${{ github.event.inputs.libass_ref }}"'" ] ; then
-              echo "Checking out non-default commit..."
-              git fetch --depth=1 origin '"${{ github.event.inputs.libass_ref }}"':artci_laref
-              git checkout --force artci_laref
-            fi
-            echo "Testing libass commit:"
-            git log -1 --format=%H
-            cd ..
-            echo ""
+              # libass
+              echo "Cloning Libass Repo: $LIBASS_REPO"
+              git clone --depth=1 "$LIBASS_REPO" libass
+              cd libass
+              if [ -n "$LIBASS_REF" ] ; then
+                echo "Checking out non-default commit..."
+                git fetch --depth=1 origin "$LIBASS_REF":artci_laref
+                git checkout --force artci_laref
+              fi
+              echo "Testing libass commit:"
+              git log -1 --format=%H
+              cd ..
+              echo ""
 
-            # regression tests
-            git clone --depth=1 https://github.com/${{ github.repository }}.git libass-tests
-            cd libass-tests
-            if [ x"${{ github.ref }}" != x ] ; then
-              git fetch --depth=1 origin ${{ github.ref }}:artci_laref
-              git checkout --force artci_laref
-            else
-              echo "Could not determine ref! Fallback to current master."
-            fi
-            echo "Using testsuite from commit:"
-            git log -1 --format=%H
-            cd ..
-            echo ""
+              # regression tests
+              git clone --depth=1 https://github.com/"$TESTS_REPO".git libass-tests
+              cd libass-tests
+              if [ -n "$TESTS_REF" ] ; then
+                git fetch --depth=1 origin "$TESTS_REF":artci_laref
+                git checkout --force artci_laref
+              else
+                echo "Could not determine ref! Fallback to current master."
+              fi
+              echo "Using testsuite from commit:"
+              git log -1 --format=%H
+              cd ..
+              echo ""
 
-            # Fix ownership
-            sudo chown -R ${{ steps.config.outputs.uid }}:${{ steps.config.outputs.gid }} *
-          '
+              # Fix ownership
+              sudo chown -R ${{ steps.config.outputs.uid }}:${{ steps.config.outputs.gid }} *
+            '
 
       - name: Prepare Chroot Jobs
         run: |
