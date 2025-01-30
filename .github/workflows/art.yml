@@ -23,9 +23,9 @@ jobs:
     runs-on: ${{ matrix.host_os || 'ubuntu-latest' }}
     # Run on each arch we support ASM on and furthemore
     # some additional little and big endian archs
-    # ASM:    amd64, i386  (x32 is no longer supported in GHA kernels)
+    # ASM:    amd64, i386, arm64 (x32 is no longer supported in GHA kernels)
     # Big:    s390x
-    # Little: arm64, riscv64, mips64el
+    # Little: riscv64, mips64el
     strategy:
       fail-fast: false
       matrix:
@@ -46,10 +46,11 @@ jobs:
             cflags: '-msse -msse2 -mfpmath=sse'
             sanity: sane?
             chroot-rev: 11
+          - arch: arm64
+            host_os: ubuntu-24.04-arm
+            sanity: sane?
           - arch: riscv64
             suite: sid
-            # needs at least debootstrap 1.0.128+nmu2+deb12u1 and 24.04 isn't "latest" yet
-            host_os: 'ubuntu-24.04'
             port: no
             chroot-rev: 12
           # Enable sanitisers for native build
@@ -95,7 +96,7 @@ jobs:
           outer_prefix=""
           inner_prefix=""
           case "${{ matrix.arch }}" in
-            amd64)
+            amd64|arm64)
               : ;;
             i386)
               outer_prefix="linux32"
