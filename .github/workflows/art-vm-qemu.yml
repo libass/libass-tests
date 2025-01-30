@@ -29,10 +29,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: 'ART (netbsd64-qemu, NetBSD-9, amd64)'
+          - name: 'ART (netbsd64-qemu, NetBSD-10, amd64)'
             os_image: netbsd
-            os_version: 9.3
-            CC: 'gcc -fsanitize=address -fsanitize=undefined,float-cast-overflow -fno-sanitize-recover=all'
+            os_version: 10.1
+            CC: 'gcc -fsanitize=undefined,float-cast-overflow -fno-sanitize-recover=all'
             confflags: ''
             # Leak detection appears to find false positives in libc and external libs
             ASAN_OPTIONS: detect_leaks=0
@@ -88,7 +88,7 @@ jobs:
           git log -1 --format=%H
 
       - name: Install Packages
-        uses: cross-platform-actions/action@v0.24.0
+        uses: cross-platform-actions/action@v0.27.0
         with:
           operating_system: ${{ matrix.os_image }}
           version: ${{ matrix.os_version }}
@@ -125,7 +125,7 @@ jobs:
             esac
 
       - name: Build libass
-        uses: cross-platform-actions/action@v0.24.0
+        uses: cross-platform-actions/action@v0.27.0
         with:
           operating_system: ${{ matrix.os_image }}
           version: ${{ matrix.os_version }}
@@ -140,7 +140,7 @@ jobs:
             cd ..
 
       - name: Run Tests
-        uses: cross-platform-actions/action@v0.24.0
+        uses: cross-platform-actions/action@v0.27.0
         with:
           operating_system: ${{ matrix.os_image }}
           version: ${{ matrix.os_version }}
@@ -155,7 +155,7 @@ jobs:
 
       - name: Shutdown VM
         if: always()
-        uses: cross-platform-actions/action@v0.24.0
+        uses: cross-platform-actions/action@v0.27.0
         with:
           operating_system: ${{ matrix.os_image }}
           version: ${{ matrix.os_version }}
