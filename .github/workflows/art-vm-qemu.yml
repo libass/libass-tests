@@ -4,8 +4,6 @@ on:
   push:
     branches: [master, ci]
   pull_request:
-  schedule:
-    - cron: '22 1 * * *'
   workflow_dispatch:
     # Even with defaults, jobs not started via dispatch will only have blank inputs
     inputs:
