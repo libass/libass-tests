@@ -1,0 +1,13 @@
+Blur, shadows, borders, and antialiased coverage of vector rectangles at
+screen edges. Each screen-edges.ass image contains eight colored objects:
+one at each of the four sides and four corners.
+
+screen-edges.ass samples:
+  1000: Gaussian blur from rectangles wholly outside the screen.
+  3000: Gaussian blur on rectangles crossing the screen boundaries.
+  5000: Gaussian blur on non-square rectangles with fractional placement.
+  7000: Blurred shadows cast inward from wholly offscreen rectangles.
+  9000: Inward shadows with unequal horizontal and vertical offsets.
+ 11000: Box-blurred rectangles with borders and inward shadows.
+ 13000: Unblurred rectangles with fractional placement at screen boundaries.
+ 15000: Visible borders around rectangles whose fills are wholly offscreen.

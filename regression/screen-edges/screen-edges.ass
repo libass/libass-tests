@@ -1,0 +1,77 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+ScaledBorderAndShadow: yes
+WrapStyle: 2
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arimo,60,&H00FFFFFF,&H00FFFFFF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:02.00,Default,offscreen-blur-north,0,0,0,,{\pos(800,-352)\blur100\1c&H5B54F2&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 320 0 320 320 0 320
+Dialogue: 0,0:00:00.00,0:00:02.00,Default,offscreen-blur-northeast,0,0,0,,{\pos(1952,-352)\blur100\1c&H1C9FFF&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 320 0 320 320 0 320
+Dialogue: 0,0:00:00.00,0:00:02.00,Default,offscreen-blur-east,0,0,0,,{\pos(1952,380)\blur100\1c&H2DD3F0&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 320 0 320 320 0 320
+Dialogue: 0,0:00:00.00,0:00:02.00,Default,offscreen-blur-southeast,0,0,0,,{\pos(1952,1112)\blur100\1c&HB6C42E&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 320 0 320 320 0 320
+Dialogue: 0,0:00:00.00,0:00:02.00,Default,offscreen-blur-south,0,0,0,,{\pos(800,1112)\blur100\1c&HF6823B&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 320 0 320 320 0 320
+Dialogue: 0,0:00:00.00,0:00:02.00,Default,offscreen-blur-southwest,0,0,0,,{\pos(-352,1112)\blur100\1c&HE55D9B&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 320 0 320 320 0 320
+Dialogue: 0,0:00:00.00,0:00:02.00,Default,offscreen-blur-west,0,0,0,,{\pos(-352,380)\blur100\1c&HB55BF1&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 320 0 320 320 0 320
+Dialogue: 0,0:00:00.00,0:00:02.00,Default,offscreen-blur-northwest,0,0,0,,{\pos(-352,-352)\blur100\1c&H4DAA43&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 320 0 320 320 0 320
+Dialogue: 0,0:00:02.00,0:00:04.00,Default,crossing-blur-north,0,0,0,,{\pos(760,-280)\blur100\1c&H5B54F2&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:02.00,0:00:04.00,Default,crossing-blur-northeast,0,0,0,,{\pos(1800,-280)\blur100\1c&H1C9FFF&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:02.00,0:00:04.00,Default,crossing-blur-east,0,0,0,,{\pos(1800,340)\blur100\1c&H2DD3F0&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:02.00,0:00:04.00,Default,crossing-blur-southeast,0,0,0,,{\pos(1800,960)\blur100\1c&HB6C42E&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:02.00,0:00:04.00,Default,crossing-blur-south,0,0,0,,{\pos(760,960)\blur100\1c&HF6823B&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:02.00,0:00:04.00,Default,crossing-blur-southwest,0,0,0,,{\pos(-280,960)\blur100\1c&HE55D9B&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:02.00,0:00:04.00,Default,crossing-blur-west,0,0,0,,{\pos(-280,340)\blur100\1c&HB55BF1&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:02.00,0:00:04.00,Default,crossing-blur-northwest,0,0,0,,{\pos(-280,-280)\blur100\1c&H4DAA43&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:04.00,0:00:06.00,Default,fractional-blur-north,0,0,0,,{\pos(719.75,-256.25)\blur100\1c&H5B54F2&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 481 0 481 337 0 337
+Dialogue: 0,0:00:04.00,0:00:06.00,Default,fractional-blur-northeast,0,0,0,,{\pos(1840.25,-256.25)\blur100\1c&H1C9FFF&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 481 0 481 337 0 337
+Dialogue: 0,0:00:04.00,0:00:06.00,Default,fractional-blur-east,0,0,0,,{\pos(1840.25,372.25)\blur100\1c&H2DD3F0&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 481 0 481 337 0 337
+Dialogue: 0,0:00:04.00,0:00:06.00,Default,fractional-blur-southeast,0,0,0,,{\pos(1840.25,1000.75)\blur100\1c&HB6C42E&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 481 0 481 337 0 337
+Dialogue: 0,0:00:04.00,0:00:06.00,Default,fractional-blur-south,0,0,0,,{\pos(719.75,1000.75)\blur100\1c&HF6823B&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 481 0 481 337 0 337
+Dialogue: 0,0:00:04.00,0:00:06.00,Default,fractional-blur-southwest,0,0,0,,{\pos(-400.75,1000.75)\blur100\1c&HE55D9B&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 481 0 481 337 0 337
+Dialogue: 0,0:00:04.00,0:00:06.00,Default,fractional-blur-west,0,0,0,,{\pos(-400.75,372.25)\blur100\1c&HB55BF1&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 481 0 481 337 0 337
+Dialogue: 0,0:00:04.00,0:00:06.00,Default,fractional-blur-northwest,0,0,0,,{\pos(-400.75,-256.25)\blur100\1c&H4DAA43&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 481 0 481 337 0 337
+Dialogue: 0,0:00:06.00,0:00:08.00,Default,inward-shadow-north,0,0,0,,{\pos(860,-360)\blur50\xshad0\yshad300\1c&H3E2720&\3c&H3E2720&\4c&H5B54F2&\p1}m 0 0 l 200 0 200 200 0 200
+Dialogue: 0,0:00:06.00,0:00:08.00,Default,inward-shadow-northeast,0,0,0,,{\pos(2080,-360)\blur50\xshad-300\yshad300\1c&H3E2720&\3c&H3E2720&\4c&H1C9FFF&\p1}m 0 0 l 200 0 200 200 0 200
+Dialogue: 0,0:00:06.00,0:00:08.00,Default,inward-shadow-east,0,0,0,,{\pos(2080,440)\blur50\xshad-300\yshad0\1c&H3E2720&\3c&H3E2720&\4c&H2DD3F0&\p1}m 0 0 l 200 0 200 200 0 200
+Dialogue: 0,0:00:06.00,0:00:08.00,Default,inward-shadow-southeast,0,0,0,,{\pos(2080,1240)\blur50\xshad-300\yshad-300\1c&H3E2720&\3c&H3E2720&\4c&HB6C42E&\p1}m 0 0 l 200 0 200 200 0 200
+Dialogue: 0,0:00:06.00,0:00:08.00,Default,inward-shadow-south,0,0,0,,{\pos(860,1240)\blur50\xshad0\yshad-300\1c&H3E2720&\3c&H3E2720&\4c&HF6823B&\p1}m 0 0 l 200 0 200 200 0 200
+Dialogue: 0,0:00:06.00,0:00:08.00,Default,inward-shadow-southwest,0,0,0,,{\pos(-360,1240)\blur50\xshad300\yshad-300\1c&H3E2720&\3c&H3E2720&\4c&HE55D9B&\p1}m 0 0 l 200 0 200 200 0 200
+Dialogue: 0,0:00:06.00,0:00:08.00,Default,inward-shadow-west,0,0,0,,{\pos(-360,440)\blur50\xshad300\yshad0\1c&H3E2720&\3c&H3E2720&\4c&HB55BF1&\p1}m 0 0 l 200 0 200 200 0 200
+Dialogue: 0,0:00:06.00,0:00:08.00,Default,inward-shadow-northwest,0,0,0,,{\pos(-360,-360)\blur50\xshad300\yshad300\1c&H3E2720&\3c&H3E2720&\4c&H4DAA43&\p1}m 0 0 l 200 0 200 200 0 200
+Dialogue: 0,0:00:08.00,0:00:10.00,Default,unequal-shadow-north,0,0,0,,{\pos(848,-272)\blur50\xshad0\yshad224\1c&H3E2720&\3c&H3E2720&\4c&H5B54F2&\p1}m 0 0 l 224 0 224 160 0 160
+Dialogue: 0,0:00:08.00,0:00:10.00,Default,unequal-shadow-northeast,0,0,0,,{\pos(2080,-272)\blur50\xshad-320\yshad224\1c&H3E2720&\3c&H3E2720&\4c&H1C9FFF&\p1}m 0 0 l 224 0 224 160 0 160
+Dialogue: 0,0:00:08.00,0:00:10.00,Default,unequal-shadow-east,0,0,0,,{\pos(2080,460)\blur50\xshad-320\yshad0\1c&H3E2720&\3c&H3E2720&\4c&H2DD3F0&\p1}m 0 0 l 224 0 224 160 0 160
+Dialogue: 0,0:00:08.00,0:00:10.00,Default,unequal-shadow-southeast,0,0,0,,{\pos(2080,1192)\blur50\xshad-320\yshad-224\1c&H3E2720&\3c&H3E2720&\4c&HB6C42E&\p1}m 0 0 l 224 0 224 160 0 160
+Dialogue: 0,0:00:08.00,0:00:10.00,Default,unequal-shadow-south,0,0,0,,{\pos(848,1192)\blur50\xshad0\yshad-224\1c&H3E2720&\3c&H3E2720&\4c&HF6823B&\p1}m 0 0 l 224 0 224 160 0 160
+Dialogue: 0,0:00:08.00,0:00:10.00,Default,unequal-shadow-southwest,0,0,0,,{\pos(-384,1192)\blur50\xshad320\yshad-224\1c&H3E2720&\3c&H3E2720&\4c&HE55D9B&\p1}m 0 0 l 224 0 224 160 0 160
+Dialogue: 0,0:00:08.00,0:00:10.00,Default,unequal-shadow-west,0,0,0,,{\pos(-384,460)\blur50\xshad320\yshad0\1c&H3E2720&\3c&H3E2720&\4c&HB55BF1&\p1}m 0 0 l 224 0 224 160 0 160
+Dialogue: 0,0:00:08.00,0:00:10.00,Default,unequal-shadow-northwest,0,0,0,,{\pos(-384,-272)\blur50\xshad320\yshad224\1c&H3E2720&\3c&H3E2720&\4c&H4DAA43&\p1}m 0 0 l 224 0 224 160 0 160
+Dialogue: 0,0:00:10.00,0:00:12.00,Default,box-blur-north,0,0,0,,{\pos(760,-240)\be127\bord20\xshad0\yshad30\1c&H5B54F2&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:10.00,0:00:12.00,Default,box-blur-northeast,0,0,0,,{\pos(1760,-240)\be127\bord20\xshad-30\yshad30\1c&H1C9FFF&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:10.00,0:00:12.00,Default,box-blur-east,0,0,0,,{\pos(1760,340)\be127\bord20\xshad-30\yshad0\1c&H2DD3F0&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:10.00,0:00:12.00,Default,box-blur-southeast,0,0,0,,{\pos(1760,920)\be127\bord20\xshad-30\yshad-30\1c&HB6C42E&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:10.00,0:00:12.00,Default,box-blur-south,0,0,0,,{\pos(760,920)\be127\bord20\xshad0\yshad-30\1c&HF6823B&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:10.00,0:00:12.00,Default,box-blur-southwest,0,0,0,,{\pos(-240,920)\be127\bord20\xshad30\yshad-30\1c&HE55D9B&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:10.00,0:00:12.00,Default,box-blur-west,0,0,0,,{\pos(-240,340)\be127\bord20\xshad30\yshad0\1c&HB55BF1&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:10.00,0:00:12.00,Default,box-blur-northwest,0,0,0,,{\pos(-240,-240)\be127\bord20\xshad30\yshad30\1c&H4DAA43&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:12.00,0:00:14.00,Default,edge-coverage-north,0,0,0,,{\pos(760.25,-239.25)\1c&H5B54F2&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:12.00,0:00:14.00,Default,edge-coverage-northeast,0,0,0,,{\pos(1760.25,-239.25)\1c&H1C9FFF&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:12.00,0:00:14.00,Default,edge-coverage-east,0,0,0,,{\pos(1760.25,340.75)\1c&H2DD3F0&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:12.00,0:00:14.00,Default,edge-coverage-southeast,0,0,0,,{\pos(1760.25,920.75)\1c&HB6C42E&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:12.00,0:00:14.00,Default,edge-coverage-south,0,0,0,,{\pos(760.25,920.75)\1c&HF6823B&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:12.00,0:00:14.00,Default,edge-coverage-southwest,0,0,0,,{\pos(-239.75,920.75)\1c&HE55D9B&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:12.00,0:00:14.00,Default,edge-coverage-west,0,0,0,,{\pos(-239.75,340.75)\1c&HB55BF1&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:12.00,0:00:14.00,Default,edge-coverage-northwest,0,0,0,,{\pos(-239.75,-239.25)\1c&H4DAA43&\3c&H3E2720&\4c&H3E2720&\p1}m 0 0 l 400 0 400 400 0 400
+Dialogue: 0,0:00:14.00,0:00:16.00,Default,border-only-north,0,0,0,,{\pos(880,-192)\bord128\1c&H5B54F2&\3c&H5B54F2&\4c&H3E2720&\p1}m 0 0 l 160 0 160 160 0 160
+Dialogue: 0,0:00:14.00,0:00:16.00,Default,border-only-northeast,0,0,0,,{\pos(1952,-192)\bord128\1c&H1C9FFF&\3c&H1C9FFF&\4c&H3E2720&\p1}m 0 0 l 160 0 160 160 0 160
+Dialogue: 0,0:00:14.00,0:00:16.00,Default,border-only-east,0,0,0,,{\pos(1952,460)\bord128\1c&H2DD3F0&\3c&H2DD3F0&\4c&H3E2720&\p1}m 0 0 l 160 0 160 160 0 160
+Dialogue: 0,0:00:14.00,0:00:16.00,Default,border-only-southeast,0,0,0,,{\pos(1952,1112)\bord128\1c&HB6C42E&\3c&HB6C42E&\4c&H3E2720&\p1}m 0 0 l 160 0 160 160 0 160
+Dialogue: 0,0:00:14.00,0:00:16.00,Default,border-only-south,0,0,0,,{\pos(880,1112)\bord128\1c&HF6823B&\3c&HF6823B&\4c&H3E2720&\p1}m 0 0 l 160 0 160 160 0 160
+Dialogue: 0,0:00:14.00,0:00:16.00,Default,border-only-southwest,0,0,0,,{\pos(-192,1112)\bord128\1c&HE55D9B&\3c&HE55D9B&\4c&H3E2720&\p1}m 0 0 l 160 0 160 160 0 160
+Dialogue: 0,0:00:14.00,0:00:16.00,Default,border-only-west,0,0,0,,{\pos(-192,460)\bord128\1c&HB55BF1&\3c&HB55BF1&\4c&H3E2720&\p1}m 0 0 l 160 0 160 160 0 160
+Dialogue: 0,0:00:14.00,0:00:16.00,Default,border-only-northwest,0,0,0,,{\pos(-192,-192)\bord128\1c&H4DAA43&\3c&H4DAA43&\4c&H3E2720&\p1}m 0 0 l 160 0 160 160 0 160
