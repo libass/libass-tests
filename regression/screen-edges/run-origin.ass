@@ -1,0 +1,18 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+ScaledBorderAndShadow: yes
+WrapStyle: 2
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arimo,68,&H00EEBB22,&H00EEBB22,&H00483019,&H00483019,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+Style: Box,Arimo,62,&H0066DD33,&H0066DD33,&H00742A35,&H00742A35,0,0,0,0,100,100,0,0,3,4,0,7,0,0,0,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:02.00,Default,screen-left,0,0,0,,{\pos(-420.3,420.7)\fsp50\frz10.55}WWWWWORIGIN
+Dialogue: 0,0:00:02.00,0:00:04.00,Default,rect-clip,0,0,0,,{\pos(170.3,600.7)\clip(500,120,1800,960)\fsp50\frz-12.7\1c&H3388FF&}WWWWWORIGIN
+Dialogue: 0,0:00:04.00,0:00:06.00,Default,leading-spaces,0,0,0,,{\pos(-170.3,320.7)\frz8.3\blur0.7\1c&HEE44CC&}\h\hWWWVisible text after leading spaces
+Dialogue: 0,0:00:06.00,0:00:08.00,Box,opaque-box-spaces,0,0,0,,{\pos(-300.3,700.7)\frz-7.3\blur1}\h\hWWWWWWVisible text inside opaque boxes
