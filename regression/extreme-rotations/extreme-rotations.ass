@@ -1,0 +1,17 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+ScaledBorderAndShadow: yes
+WrapStyle: 2
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arimo,60,&H00005CFF,&H00005CFF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,0,0,0,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:02.00,Default,positive-y,0,0,0,,{\1c&H005CFF&\an5\pos(2753.4375,541)\org(1012.1875,540)\fry89.524444641264\p1}m -1023 -1 l 1023 -1 1023 1 -1023 1
+Dialogue: 0,0:00:02.00,0:00:04.00,Default,negative-y,0,0,0,,{\1c&HFFB800&\an5\pos(1212.5625,541)\org(907.8125,540)\fry-89.524444641264\p1}m -1023 -1 l 1023 -1 1023 1 -1023 1
+Dialogue: 0,0:00:04.00,0:00:06.00,Default,negative-x,0,0,0,,{\1c&HB82EFF&\an5\pos(961,2333.4375)\org(960,592.1875)\frx-89.524444641264\p1}m -1 -1023 l 1 -1023 1 1023 -1 1023
+Dialogue: 0,0:00:06.00,0:00:08.00,Default,positive-x,0,0,0,,{\1c&H00D637&\an5\pos(961,792.5625)\org(960,487.8125)\frx89.524444641264\p1}m -1 -1023 l 1 -1023 1 1023 -1 1023
