@@ -1,0 +1,45 @@
+Encoding -2: right-to-left base direction without whole text layout.
+
+The visual order is the same as with whole text layout: the Unicode
+Bidirectional Algorithm runs over the whole event text with a
+right-to-left paragraph direction, and each line is reordered after
+wrapping. Text is still shaped run by run (each character with \fsp),
+and a run is split where its bidi level changes.
+Style R uses Encoding -2, style L Encoding 0. Coloured text marks
+separate runs.
+
+Each event is shown for one second and sampled half a second in.
+
+rtl-runs.ass: end punctuation, a line starting with Latin, a number in
+  text, a coloured word, a number as its own run, Latin followed by a
+  number run, brackets, Arabic with Arabic-Indic digits, a drawing inside
+  a line, \an9 (alignment is unchanged), a decimal point that is a run
+  of its own between two number runs, a paragraph separator (U+2029)
+  between tags (each paragraph is reordered on its own), a Latin phrase
+  split by a tag next to Hebrew text, a Hebrew line ending in Latin
+  text and a period (the period goes to the left), a Latin-only line
+  (also a right-to-left paragraph, so its period goes to the left), a
+  tagged Latin word between Hebrew words, an isolate (LRI...PDI) across
+  a tag (needs FriBidi 1.0 or later), an override (LRO...PDF) inside a
+  bold run, a translucent BorderStyle 3 box behind Hebrew, Latin and a
+  number in one run, an RLO over Hebrew with niqqud and an LRO over
+  Arabic with harakat.
+rtl-karaoke.ass: \k, \kf halfway through the first syllable, \ko,
+  \k0 starting karaoke in the middle of a Latin phrase, Latin syllables
+  between Hebrew ones and a line starting with Latin syllables (spaces
+  between syllables stay in place), and a \kf syllable whose Hebrew and
+  Latin parts end up apart. Karaoke timing is unchanged, and \kf still
+  fills each syllable from left to right, across its whole width.
+rtl-fsp.ass: \fsp with Hebrew, Hebrew with digits, Hebrew with Latin
+  words, numbers with separators ("50%", "3.14", "1,000",
+  "03-1234567"), U+001C (a paragraph separator, drawn as a missing
+  glyph), an LRE between digits, alone and inside Hebrew text (it
+  applies to the rest of the line), and a Latin-only line.
+rtl-wrap.ass: lines are reordered after wrapping; a long line with a
+  coloured run, a wrap inside an italic Latin run, \N, and a coloured
+  number followed by "%" and \N.
+rtl-overrides.ass: \fe-2 in an Encoding 0 style, \fe0 in an Encoding -2
+  style (left to right as before), \r to an Encoding 0 style and back
+  (the event's last setting applies), and \fay (the shear restarts at
+  each run, and continues across the parts of a run that has Hebrew and
+  Latin text).

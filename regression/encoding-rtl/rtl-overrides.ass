@@ -1,0 +1,19 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 640
+PlayResY: 200
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: R,DejaVu Sans,32,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,0,2,20,20,20,-2
+Style: L,DejaVu Sans,32,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,0,2,20,20,20,0
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:01.00,L,fe-2,0,0,0,,{\fe-2}שלום {\1c&H00C0FF&}עולם{\1c}!
+Dialogue: 0,0:00:01.00,0:00:02.00,R,fe0,0,0,0,,{\fe0}שלום {\1c&H00C0FF&}עולם{\1c}!
+Dialogue: 0,0:00:02.00,0:00:03.00,R,reset-ltr-style,0,0,0,,שלום {\rL}hello{\r} עולם!
+Dialogue: 0,0:00:03.00,0:00:04.00,R,fay,0,0,0,,{\fay0.2}שלום {\1c&H00C0FF&}ע{\1c} יפה מאוד!
+Dialogue: 0,0:00:04.00,0:00:05.00,R,fay-mixed,0,0,0,,{\fay0.2}שלום hello {\1c&H00C0FF&}עולם{\1c} 12!

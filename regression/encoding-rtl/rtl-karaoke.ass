@@ -1,0 +1,21 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 640
+PlayResY: 200
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: R,DejaVu Sans,32,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,0,2,20,20,20,-2
+Style: L,DejaVu Sans,32,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,0,2,20,20,20,0
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:01.00,R,k,0,0,0,,{\k40}שלום {\k40}עולם {\k40}יפה!
+Dialogue: 0,0:00:01.00,0:00:02.00,R,kf,0,0,0,,{\kf100}שלום {\kf100}עולם!
+Dialogue: 0,0:00:02.00,0:00:03.00,R,ko,0,0,0,,{\ko40}שלום {\ko40}עולם {\ko40}יפה!
+Dialogue: 0,0:00:03.00,0:00:04.00,R,k0,0,0,0,,אמרתי hello {\k0}world היום.
+Dialogue: 0,0:00:04.00,0:00:05.00,R,k-latin-middle,0,0,0,,{\k20}אני {\k20}אוהב {\k20}you {\k20}baby {\k20}הלילה
+Dialogue: 0,0:00:05.00,0:00:06.00,R,kf-latin-first,0,0,0,,{\kf25}I {\kf25}love {\kf25}you {\kf25}אהובה
+Dialogue: 0,0:00:06.00,0:00:07.00,R,kf-split,0,0,0,,{\kf100}שלום hello {\kf100}world
