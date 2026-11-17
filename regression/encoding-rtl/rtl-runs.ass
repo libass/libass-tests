@@ -1,0 +1,36 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 640
+PlayResY: 200
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: R,DejaVu Sans,32,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,0,2,20,20,20,-2
+Style: L,DejaVu Sans,32,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,0,2,20,20,20,0
+Style: B,DejaVu Sans,32,&H00FFFFFF,&H000000FF,&H80C04000,&H00000000,0,0,0,0,100,100,0,0,3,4,0,2,20,20,20,-2
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:01.00,R,end-punct,0,0,0,,שלום עולם!
+Dialogue: 0,0:00:01.00,0:00:02.00,R,latin-first,0,0,0,,OK, אני בא?
+Dialogue: 0,0:00:02.00,0:00:03.00,R,number,0,0,0,,אני גר ברחוב 12 בתל אביב.
+Dialogue: 0,0:00:03.00,0:00:04.00,R,tagged-word,0,0,0,,זה {\1c&H00C0FF&}חשוב{\1c} מאוד.
+Dialogue: 0,0:00:04.00,0:00:05.00,R,number-run,0,0,0,,יש לי {\1c&H00C0FF&}12{\1c} תפוחים.
+Dialogue: 0,0:00:05.00,0:00:06.00,R,latin-then-number,0,0,0,,Windows {\1c&H00C0FF&}11{\1c} יצא היום.
+Dialogue: 0,0:00:06.00,0:00:07.00,R,brackets,0,0,0,,הוא אמר (שלום) ו[עולם] {\1c&H00C0FF&}<טוב>{\1c}.
+Dialogue: 0,0:00:07.00,0:00:08.00,R,arabic,0,0,0,,عندي ١٢ {\1c&H00C0FF&}تفاحة{\1c}!
+Dialogue: 0,0:00:08.00,0:00:09.00,R,drawing,0,0,0,,שלום {\p1}m 0 0 l 20 0 20 20 0 20{\p0} עולם!
+Dialogue: 0,0:00:09.00,0:00:10.00,R,an9,0,0,0,,{\an9}שלום {\1c&H00C0FF&}עולם{\1c}!
+Dialogue: 0,0:00:10.00,0:00:11.00,R,separator-run,0,0,0,,המחיר {\1c&H00C0FF&}3{\b1}.{\b0}14{\1c} שקל
+Dialogue: 0,0:00:11.00,0:00:12.00,R,paragraph-separator,0,0,0,,{\b1}X{\b0} אחד {\b1}שתיים{\b0} שלוש {\i1}four{\i0} חמש
+Dialogue: 0,0:00:12.00,0:00:13.00,R,split-phrase,0,0,0,,אמרתי {\i1}hello {\i0}world ואז הלכתי.
+Dialogue: 0,0:00:13.00,0:00:14.00,R,latin-end,0,0,0,,אמרתי {\i1}hello {\i0}world.
+Dialogue: 0,0:00:14.00,0:00:15.00,R,latin-only,0,0,0,,Hello {\1c&H00C0FF&}big{\1c} world.
+Dialogue: 0,0:00:15.00,0:00:16.00,R,tagged-latin-spaces,0,0,0,,שלום {\i1}hello {\i0}עולם
+Dialogue: 0,0:00:16.00,0:00:17.00,R,isolate,0,0,0,,שלום ⁦{\i1}one{\i0}, two!⁩ עולם
+Dialogue: 0,0:00:17.00,0:00:18.00,R,override,0,0,0,,שלום {\b1}‭אבג‬{\b0} עולם
+Dialogue: 0,0:00:18.00,0:00:19.00,B,box,0,0,0,,שלום hello עולם 123 סוף
+Dialogue: 0,0:00:19.00,0:00:20.00,R,rlo-niqqud,0,0,0,,‮שָׁלוֹם‬ abc
+Dialogue: 0,0:00:20.00,0:00:21.00,R,lro-harakat,0,0,0,,שלום ‭سَلَام‬

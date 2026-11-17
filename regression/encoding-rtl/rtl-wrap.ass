@@ -1,0 +1,18 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 640
+PlayResY: 200
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: R,DejaVu Sans,32,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,0,2,20,20,20,-2
+Style: L,DejaVu Sans,32,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,0,2,20,20,20,0
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:01.00,R,wrap,0,0,0,,זה משפט ארוך מאוד שצריך {\1c&H00C0FF&}להישבר{\1c} לשתי שורות לפחות כדי שנוכל לבדוק את הגלישה, נכון?
+Dialogue: 0,0:00:01.00,0:00:02.00,R,wrap-latin,0,0,0,,זה משפט ארוך עם מילים באנגלית כמו {\i1}Windows Subsystem for Linux{\i0} שצריך להישבר לשורות.
+Dialogue: 0,0:00:02.00,0:00:03.00,R,hard-break,0,0,0,,שורה ראשונה!\Nשורה {\1c&H00C0FF&}שנייה{\1c}?
+Dialogue: 0,0:00:03.00,0:00:04.00,R,hard-break-after-run,0,0,0,,שלום {\1c&H00C0FF&}50{\1c}%\Nabc
